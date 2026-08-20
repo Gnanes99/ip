@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
 // reused existing code, changed banner and filename
@@ -17,6 +18,8 @@ public class Dennis {
         System.out.println(line);
 
         Scanner scan = new Scanner(System.in);
+        String[] tasks = new String[100];
+        int taskCount = 0;
 
         while (scan.hasNextLine()) {
             String command = scan.nextLine();
@@ -27,7 +30,15 @@ public class Dennis {
                 break;
             }
 
-            System.out.println(command);
+            if (command.equals("list")) {
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println((i + 1) + ". " + tasks[i]);
+                }
+            } else {
+                    tasks[taskCount] = command;
+                    taskCount++;
+                    System.out.println("added: " + command);
+                }
             System.out.println(line);
         }
 
