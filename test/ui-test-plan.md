@@ -67,6 +67,10 @@ event meeting /from 2pm
 mark
 mark abc
 mark 1
+unmark abc
+unmark 1
+delete abc
+delete 1
 blah
 bye
 ```
@@ -87,15 +91,23 @@ ERROR!! I'm sorry, todo must contain a task.
 _____________________________________________________
 ERROR!! Use /by to specify the deadline.
 _____________________________________________________
-ERROR!! Use /from and /to for an event.
+ERROR!! Use /from and /to to specify the duration of the event.
 _____________________________________________________
 ERROR!! Please enter a task number.
 _____________________________________________________
-ERROR!! The task number must be a number.
+ERROR!! The task number must be an integer.
 _____________________________________________________
-ERROR!! That task number does not exist.
+ERROR!! That task number exceeds the tasks.
 _____________________________________________________
-ERROR!! I'm sorry, I don't understand what you are saying :(
+ERROR!! The task number must be an integer.
+_____________________________________________________
+ERROR!! That task number exceeds the tasks.
+_____________________________________________________
+ERROR!! The task number must be an integer.
+_____________________________________________________
+ERROR!! That task number exceeds the tasks.
+_____________________________________________________
+ERROR!! I'm sorry, I don't understand what you are trying to say :(
 _____________________________________________________
 Bye. Looking forward to seeing you again!
 _____________________________________________________
@@ -126,6 +138,52 @@ How may I help you today?
 _____________________________________________________
 ERROR!! I'm sorry, deadline must contain a task.
 _____________________________________________________
+Bye. Looking forward to seeing you again!
+_____________________________________________________
+```
+
+### TC-04: Delete a task
+
+**Aim:** Verify that `delete` removes the selected task, reports the removed task, updates the task count, and shifts the remaining task numbers forward.
+
+**Input:**
+
+```text
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+delete 2
+list
+bye
+```
+
+**Expected output:**
+
+```text
+ ____                   _     
+|  _ \  ___ _ __  _ __ (_)___ 
+| | | |/ _ \ '_ \| '_ \| / __|
+| |_| |  __/ | | | | | | \__ \
+|____/ \___|_| |_|_| |_|_|___/
+
+Hi, my name is Dennis. It is lovely to meet you!
+How may I help you today?
+_____________________________________________________
+Understood. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+Understood. I've added this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+Understood. I've added this task:
+  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+Understood. I've removed this task:
+  [D][ ] return book (by: Sunday)
+Now there are 2 tasks in the list.
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 Bye. Looking forward to seeing you again!
 _____________________________________________________
 ```

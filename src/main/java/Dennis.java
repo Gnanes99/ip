@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
 // reused existing code, changed banner and filename
@@ -22,8 +23,7 @@ public class Dennis {
         System.out.println(line);
 
         Scanner scan = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         while (scan.hasNextLine()) {
             String command = scan.nextLine();
@@ -39,8 +39,8 @@ public class Dennis {
                     System.out.println(
                             "Here are the tasks in your list:");
 
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
                 } else if (command.equals("mark")
                         || command.startsWith("mark ")) {
@@ -57,15 +57,15 @@ public class Dennis {
                         taskNumber = Integer.parseInt(number);
                     } catch (NumberFormatException e) {
                         throw new DennisException(
-                                "The task number must be a number.");
+                                "The task number must be an integer.");
                     }
 
-                    if (taskNumber < 1 || taskNumber > taskCount) {
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DennisException(
-                                "That task number does not exist.");
+                                "That task number exceeds the tasks.");
                     }
 
-                    Task task = tasks[taskNumber - 1];
+                    Task task = tasks.get(taskNumber - 1);
                     task.markAsDone();
 
                     System.out.println(
@@ -86,29 +86,57 @@ public class Dennis {
                         taskNumber = Integer.parseInt(number);
                     } catch (NumberFormatException e) {
                         throw new DennisException(
-                                "The task number must be a number.");
+                                "The task number must be an integer.");
                     }
 
-                    if (taskNumber < 1 || taskNumber > taskCount) {
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DennisException(
-                                "That task number does not exist.");
+                                "That task number exceeds the tasks.");
                     }
 
-                    Task task = tasks[taskNumber - 1];
+                    Task task = tasks.get(taskNumber - 1);
                     task.markAsNotDone();
 
                     System.out.println(
                             "Alright, I've marked this task as not done yet:");
                     System.out.println("  " + task);
+                } else if (command.equals("delete")
+                        || command.startsWith("delete ")) {
+                    String number = command.substring(6).trim();
+
+                    if (number.isEmpty()) {
+                        throw new DennisException(
+                                "Please enter a task number.");
+                    }
+
+                    int taskNumber;
+
+                    try {
+                        taskNumber = Integer.parseInt(number);
+                    } catch (NumberFormatException e) {
+                        throw new DennisException(
+                                "The task number must be an integer.");
+                    }
+
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
+                        throw new DennisException(
+                                "That task number exceeds the tasks.");
+                    }
+
+                    Task removedTask = tasks.remove(taskNumber - 1);
+
+                    System.out.println("Understood. I've removed this task:");
+                    System.out.println("  " + removedTask);
+                    System.out.println(
+                            "Now there are " + tasks.size() + " tasks in the list.");
                 } else if (command.equals("todo")
                         || command.startsWith("todo ")) {
                     Task task =
                             new Todo(command.substring(4).trim());
 
-                    tasks[taskCount] = task;
-                    taskCount++;
+                    tasks.add(task);
 
-                    printAddedTask(task, taskCount);
+                    printAddedTask(task, tasks.size());
                 } else if (command.equals("deadline")
                         || command.startsWith("deadline ")) {
                     int byIndex = command.indexOf(" /by ");
@@ -125,10 +153,9 @@ public class Dennis {
 
                     Task task = new Deadline(description, by);
 
-                    tasks[taskCount] = task;
-                    taskCount++;
+                    tasks.add(task);
 
-                    printAddedTask(task, taskCount);
+                    printAddedTask(task, tasks.size());
                 } else if (command.equals("event")
                         || command.startsWith("event ")) {
                     int fromIndex = command.indexOf(" /from ");
@@ -137,7 +164,7 @@ public class Dennis {
                     if (fromIndex < 0 || toIndex < 0
                             || toIndex < fromIndex) {
                         throw new DennisException(
-                                "Use /from and /to for an event.");
+                                "Use /from and /to to specify the duration of the event.");
                     }
 
                     String description =
@@ -149,14 +176,13 @@ public class Dennis {
 
                     Task task = new Event(description, from, to);
 
-                    tasks[taskCount] = task;
-                    taskCount++;
+                    tasks.add(task);
 
-                    printAddedTask(task, taskCount);
+                    printAddedTask(task, tasks.size());
                 } else {
                     throw new DennisException(
                             "I'm sorry, I don't understand "
-                                    + "what you are saying :(");
+                                    + "what you are trying to say :(");
                 }
             } catch (DennisException e) {
                 System.out.println("ERROR!! " + e.getMessage());
