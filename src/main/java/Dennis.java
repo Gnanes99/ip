@@ -19,6 +19,7 @@ public class Dennis {
 
         Scanner scan = new Scanner(System.in);
         String[] tasks = new String[100];
+        boolean[] isDone = new boolean[100];
         int taskCount = 0;
 
         while (scan.hasNextLine()) {
@@ -31,14 +32,23 @@ public class Dennis {
             }
 
             if (command.equals("list")) {
+                System.out.println("Here are the current tasks in your list:");
+
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    String status = isDone[i] ? "X" : " ";
+                    System.out.println((i + 1) + ".[" + status + "] " + tasks[i]);
                 }
+            } else if (command.startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(command.substring(5).trim());
+                isDone[taskNumber - 1] = true;
+
+                System.out.println("Excellent! I've marked this task as done:");
+                System.out.println("  [X] " + tasks[taskNumber - 1]);
             } else {
-                    tasks[taskCount] = command;
-                    taskCount++;
-                    System.out.println("added: " + command);
-                }
+                tasks[taskCount] = command;
+                taskCount++;
+                System.out.println("added: " + command);
+            }
             System.out.println(line);
         }
 
