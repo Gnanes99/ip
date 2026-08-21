@@ -18,8 +18,7 @@ public class Dennis {
         System.out.println(line);
 
         Scanner scan = new Scanner(System.in);
-        String[] tasks = new String[100];
-        boolean[] isDone = new boolean[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
 
         while (scan.hasNextLine()) {
@@ -32,30 +31,30 @@ public class Dennis {
             }
 
             if (command.equals("list")) {
-                System.out.println("Here are the current tasks in your list:");
+                System.out.println("Here are the tasks in your list:");
 
                 for (int i = 0; i < taskCount; i++) {
-                    String status = isDone[i] ? "X" : " ";
-                    System.out.println((i + 1) + ".[" + status + "] " + tasks[i]);
+                    System.out.println((i + 1) + "." + tasks[i]);
                 }
             } else if (command.startsWith("mark ")) {
                 int taskNumber = Integer.parseInt(command.substring(5).trim());
-                isDone[taskNumber - 1] = true;
+                Task task = tasks[taskNumber - 1];
+                task.markAsDone();
 
-                System.out.println("Excellent! I've marked this task as done:");
-                System.out.println("  [X] " + tasks[taskNumber - 1]);
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println("  " + task);
             } else if (command.startsWith("unmark ")) {
-            int taskNumber = Integer.parseInt(command.substring(7).trim());
-            isDone[taskNumber - 1] = false;
+                int taskNumber = Integer.parseInt(command.substring(7).trim());
+                Task task = tasks[taskNumber - 1];
+                task.markAsNotDone();
 
-            System.out.println("Alright, I've marked this task as not done yet:");
-            System.out.println("  [ ] " + tasks[taskNumber - 1]);
+                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println("  " + task);
             } else {
-                tasks[taskCount] = command;
+                tasks[taskCount] = new Task(command);
                 taskCount++;
                 System.out.println("added: " + command);
             }
-            System.out.println(line);
         }
 
     }
