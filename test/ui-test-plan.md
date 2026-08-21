@@ -54,6 +54,82 @@ Bye. Looking forward to seeing you again!
 _____________________________________________________
 ```
 
+### TC-02: Handle invalid commands and task numbers
+
+**Aim:** Verify that invalid commands, missing command details, and invalid task numbers produce error messages without stopping the chatbot.
+
+**Input:**
+
+```text
+todo
+deadline return book
+event meeting /from 2pm
+mark
+mark abc
+mark 1
+blah
+bye
+```
+
+**Expected output:**
+
+```text
+ ____                   _     
+|  _ \  ___ _ __  _ __ (_)___ 
+| | | |/ _ \ '_ \| '_ \| / __|
+| |_| |  __/ | | | | | | \__ \
+|____/ \___|_| |_|_| |_|_|___/
+
+Hi, my name is Dennis. It is lovely to meet you!
+How may I help you today?
+_____________________________________________________
+ERROR!! I'm sorry, todo must contain a task.
+_____________________________________________________
+ERROR!! Use /by to specify the deadline.
+_____________________________________________________
+ERROR!! Use /from and /to for an event.
+_____________________________________________________
+ERROR!! Please enter a task number.
+_____________________________________________________
+ERROR!! The task number must be a number.
+_____________________________________________________
+ERROR!! That task number does not exist.
+_____________________________________________________
+ERROR!! I'm sorry, I don't understand what you are saying :(
+_____________________________________________________
+Bye. Looking forward to seeing you again!
+_____________________________________________________
+```
+
+### TC-03: Reject a deadline with no description
+
+**Aim:** Verify that a deadline with a date but no task description produces its specific error message.
+
+**Input:**
+
+```text
+deadline /by Sunday
+bye
+```
+
+**Expected output:**
+
+```text
+ ____                   _     
+|  _ \  ___ _ __  _ __ (_)___ 
+| | | |/ _ \ '_ \| '_ \| / __|
+| |_| |  __/ | | | | | | \__ \
+|____/ \___|_| |_|_| |_|_|___/
+
+Hi, my name is Dennis. It is lovely to meet you!
+How may I help you today?
+_____________________________________________________
+ERROR!! I'm sorry, deadline must contain a task.
+_____________________________________________________
+Bye. Looking forward to seeing you again!
+_____________________________________________________
+```
+
 ## Session record
 
 After a run, report the input and actual output in the conversation. Do not store transient session results in this plan unless the user asks for them to be saved.

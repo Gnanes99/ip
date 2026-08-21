@@ -1,18 +1,30 @@
-/**
- * Represents a task that must be completed by a specific date or time.
- */
 public class Deadline extends Task {
     private final String by;
 
-    /**
-     * Creates an incomplete deadline task.
-     *
-     * @param description description of the task
-     * @param by deadline supplied by the user
-     */
-    public Deadline(String description, String by) {
-        super(description);
-        this.by = by;
+    public Deadline(String description, String by)
+            throws DennisException {
+        super(validateDescription(description));
+        this.by = validateBy(by);
+    }
+
+    private static String validateDescription(String description)
+            throws DennisException {
+        if (description.isBlank()) {
+            throw new DennisException(
+                    "I'm sorry, deadline must contain a task.");
+        }
+
+        return description;
+    }
+
+    private static String validateBy(String by)
+            throws DennisException {
+        if (by.isBlank()) {
+            throw new DennisException(
+                    "deadline must contain a date and time.");
+        }
+
+        return by;
     }
 
     @Override
