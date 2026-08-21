@@ -56,7 +56,7 @@ public class Dennis {
                 System.out.println("Alright, I've marked this task as not done yet:");
                 System.out.println("  " + task);
             } else if (command.startsWith("todo ")) {
-                Task task = new Task(command.substring(5).trim());
+                Task task = new Todo(command.substring(5).trim());
 
                 tasks[taskCount] = task;
                 taskCount++;
@@ -68,7 +68,7 @@ public class Dennis {
                 String description = command.substring(9, byIndex).trim();
                 String by = command.substring(byIndex + 5).trim();
 
-                Task task = Task.deadline(description, by);
+                Task task = new Deadline(description, by);
 
                 tasks[taskCount] = task;
                 taskCount++;
@@ -82,7 +82,7 @@ public class Dennis {
                 String from = command.substring(fromIndex + 7, toIndex).trim();
                 String to = command.substring(toIndex + 5).trim();
 
-                Task task = Task.event(description, from, to);
+                Task task = new Event(description, from, to);
 
                 tasks[taskCount] = task;
                 taskCount++;
