@@ -44,6 +44,12 @@ public class Dennis {
 
                 System.out.println("Excellent! I've marked this task as done:");
                 System.out.println("  [X] " + tasks[taskNumber - 1]);
+            } else if (command.startsWith("unmark ")) {
+            int taskNumber = Integer.parseInt(command.substring(7).trim());
+            isDone[taskNumber - 1] = false;
+
+            System.out.println("Alright, I've marked this task as not done yet:");
+            System.out.println("  [ ] " + tasks[taskNumber - 1]);
             } else {
                 tasks[taskCount] = command;
                 taskCount++;
