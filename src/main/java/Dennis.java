@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 
 // reused existing code, changed banner and filename
@@ -88,6 +87,9 @@ public class Dennis {
                 taskCount++;
 
                 printAddedTask(task, taskCount);
+            } else {
+                System.out.println("ERROR!! I'm sorry, I don't understand what you are saying :(");
+                System.out.println(line);
             }
         }
     }
