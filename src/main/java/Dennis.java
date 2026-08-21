@@ -5,6 +5,11 @@ import java.util.ArrayList;
 // reused existing code, changed banner and filename
 public class Dennis {
     private static final String line = "_____________________________________________________";
+    private static void printAddedTask(Task task, int taskCount) {
+        System.out.println("Understood. I've added this task:");
+        System.out.println("  " + task);
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
 
     public static void main(String[] args) {
         String banner = " ____                   _     \n"
@@ -41,21 +46,49 @@ public class Dennis {
                 Task task = tasks[taskNumber - 1];
                 task.markAsDone();
 
-                System.out.println("Nice! I've marked this task as done:");
+                System.out.println("Excellent! I've marked this task as done:");
                 System.out.println("  " + task);
             } else if (command.startsWith("unmark ")) {
                 int taskNumber = Integer.parseInt(command.substring(7).trim());
                 Task task = tasks[taskNumber - 1];
                 task.markAsNotDone();
 
-                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println("Alright, I've marked this task as not done yet:");
                 System.out.println("  " + task);
-            } else {
-                tasks[taskCount] = new Task(command);
+            } else if (command.startsWith("todo ")) {
+                Task task = new Task(command.substring(5).trim());
+
+                tasks[taskCount] = task;
                 taskCount++;
-                System.out.println("added: " + command);
+
+                printAddedTask(task, taskCount);
+            } else if (command.startsWith("deadline ")) {
+                int byIndex = command.indexOf(" /by ");
+
+                String description = command.substring(9, byIndex).trim();
+                String by = command.substring(byIndex + 5).trim();
+
+                Task task = Task.deadline(description, by);
+
+                tasks[taskCount] = task;
+                taskCount++;
+
+                printAddedTask(task, taskCount);
+            } else if (command.startsWith("event ")) {
+                int fromIndex = command.indexOf(" /from ");
+                int toIndex = command.indexOf(" /to ", fromIndex + 7);
+
+                String description = command.substring(6, fromIndex).trim();
+                String from = command.substring(fromIndex + 7, toIndex).trim();
+                String to = command.substring(toIndex + 5).trim();
+
+                Task task = Task.event(description, from, to);
+
+                tasks[taskCount] = task;
+                taskCount++;
+
+                printAddedTask(task, taskCount);
             }
         }
-
     }
 }
