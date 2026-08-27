@@ -10,7 +10,12 @@ public class Todo extends Task {
                     "I'm sorry, todo must contain a task.");
         }
 
-        return description;
+        return rejectSeparator(description, "A task description");
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "T | " + getStatusNumber() + " | " + description;
     }
 
     @Override
