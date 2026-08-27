@@ -51,6 +51,13 @@ public class Event extends Task {
     }
 
     @Override
+    public boolean occursOn(LocalDate date) {
+        // Inclusive on both ends: an event counts on its start and end dates
+        // and every day in between.
+        return !date.isBefore(from) && !date.isAfter(to);
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString()
                 + " (from: " + formatDate(from) + " to: " + formatDate(to) + ")";

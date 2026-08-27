@@ -10,6 +10,7 @@ public enum CommandType {
     TODO,
     DEADLINE,
     EVENT,
+    ON,
     UNKNOWN;
 
     /**
@@ -34,6 +35,7 @@ public enum CommandType {
             case "todo" -> TODO;
             case "deadline" -> DEADLINE;
             case "event" -> EVENT;
+            case "on" -> ON;
             default -> UNKNOWN;
         };
     }

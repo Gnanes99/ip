@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -187,6 +188,40 @@ public class Dennis {
                         tasks.add(event);
                         storage.save(tasks);
                         printAddedTask(event, tasks.size());
+                        break;
+
+                    case ON:
+                        String onArg =
+                                command.substring("on".length()).trim();
+
+                        if (onArg.isEmpty()) {
+                            throw new DennisException(
+                                    "Please enter a date, e.g. on 2019-12-01.");
+                        }
+
+                        LocalDate onDate =
+                                Task.parseDate(onArg, "The date");
+
+                        System.out.println("Here are the tasks on "
+                                + Task.formatDate(onDate) + ":");
+
+                        // Show each match at its real position in the list so
+                        // the number still works with mark/unmark/delete; this
+                        // means the numbers can skip over non-matching tasks.
+                        boolean anyOnDate = false;
+                        for (int i = 0; i < tasks.size(); i++) {
+                            Task task = tasks.get(i);
+                            if (task.occursOn(onDate)) {
+                                anyOnDate = true;
+                                System.out.println((i + 1) + "." + task);
+                            }
+                        }
+
+                        if (!anyOnDate) {
+                            System.out.println(
+                                    "You have no deadlines or events "
+                                            + "on that date.");
+                        }
                         break;
 
                     case UNKNOWN:

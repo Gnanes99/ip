@@ -523,6 +523,69 @@ Skipping unreadable line 3 in data\dennis.txt: An event start must be a date in 
 Loaded 1 task(s) from data\dennis.txt; 2 line(s) were ignored.
 ```
 
+### TC-12: `on <date>` lists tasks occurring on a date (stretch goal)
+
+**Aim:** Verify the `on` command. It should list every deadline whose date
+equals the given date and every event whose span includes it (both ends
+inclusive), shown at their real list positions. It should also handle a date
+with no matches, a missing date argument, and an unparseable date.
+
+**Precondition:** `./data/dennis.txt` must not exist (so the list starts empty).
+
+**Input:**
+
+```text
+todo read book
+deadline return book /by 2019-12-01
+event project meeting /from 2019-12-02 /to 2019-12-05
+deadline pay rent /by 2019-12-05
+on 2019-12-01
+on 2019-12-05
+on 2019-11-11
+on
+on notadate
+bye
+```
+
+**Expected output:**
+
+```text
+ ____                   _     
+|  _ \  ___ _ __  _ __ (_)___ 
+| | | |/ _ \ '_ \| '_ \| / __|
+| |_| |  __/ | | | | | | \__ \
+|____/ \___|_| |_|_| |_|_|___/
+
+Hi, my name is Dennis. It is lovely to meet you!
+How may I help you today?
+_____________________________________________________
+Understood. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+Understood. I've added this task:
+  [D][ ] return book (by: Dec 01 2019)
+Now you have 2 tasks in the list.
+Understood. I've added this task:
+  [E][ ] project meeting (from: Dec 02 2019 to: Dec 05 2019)
+Now you have 3 tasks in the list.
+Understood. I've added this task:
+  [D][ ] pay rent (by: Dec 05 2019)
+Now you have 4 tasks in the list.
+Here are the tasks on Dec 01 2019:
+2.[D][ ] return book (by: Dec 01 2019)
+Here are the tasks on Dec 05 2019:
+3.[E][ ] project meeting (from: Dec 02 2019 to: Dec 05 2019)
+4.[D][ ] pay rent (by: Dec 05 2019)
+Here are the tasks on Nov 11 2019:
+You have no deadlines or events on that date.
+ERROR!! Please enter a date, e.g. on 2019-12-01.
+_____________________________________________________
+ERROR!! The date must be a date in yyyy-MM-dd form, e.g. 2019-12-01.
+_____________________________________________________
+Bye. Looking forward to seeing you again!
+_____________________________________________________
+```
+
 ## Session record
 
 After a run, report the input and actual output in the conversation. Do not store transient session results in this plan unless the user asks for them to be saved.

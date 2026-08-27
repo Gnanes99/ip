@@ -39,6 +39,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public boolean occursOn(LocalDate date) {
+        return by.equals(date);
+    }
+
+    @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + formatDate(by) + ")";
     }

@@ -67,7 +67,7 @@ public abstract class Task {
      * @throws DennisException if {@code raw} is blank or not a valid
      *                         {@code yyyy-MM-dd} date
      */
-    protected static LocalDate parseDate(String raw, String fieldName)
+    public static LocalDate parseDate(String raw, String fieldName)
             throws DennisException {
         if (raw.isBlank()) {
             throw new DennisException(fieldName + " cannot be empty.");
@@ -87,8 +87,20 @@ public abstract class Task {
      * @param date the date to format
      * @return the date as {@code MMM dd yyyy}, e.g. {@code Dec 01 2019}
      */
-    protected static String formatDate(LocalDate date) {
+    public static String formatDate(LocalDate date) {
         return date.format(DISPLAY_FORMAT);
+    }
+
+    /**
+     * Reports whether this task falls on the given date. The base
+     * implementation returns {@code false}; task types that carry a date
+     * (deadline, event) override this.
+     *
+     * @param date the date to test against
+     * @return {@code true} if the task occurs on {@code date}
+     */
+    public boolean occursOn(LocalDate date) {
+        return false;
     }
 
     /**
