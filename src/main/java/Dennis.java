@@ -1,5 +1,6 @@
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 
 // reused existing code, changed banner and filename
@@ -50,7 +51,11 @@ public class Dennis {
         System.out.println(line);
 
         Scanner scan = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+
+        // Level 7: reload any previously saved tasks on start-up, then save
+        // back to ./data/duke.txt after every change to the list.
+        Storage storage = new Storage();
+        ArrayList<Task> tasks = storage.load();
 
         while (scan.hasNextLine()) {
             String command = scan.nextLine();
@@ -92,6 +97,7 @@ public class Dennis {
 
                         Task markedTask = tasks.get(markNumber - 1);
                         markedTask.markAsDone();
+                        storage.save(tasks);
 
                         System.out.println(
                                 "Excellent! I've marked this task as done:");
@@ -104,6 +110,7 @@ public class Dennis {
 
                         Task unmarkedTask = tasks.get(unmarkNumber - 1);
                         unmarkedTask.markAsNotDone();
+                        storage.save(tasks);
 
                         System.out.println(
                                 "Alright, I've marked this task as not done yet:");
@@ -116,6 +123,7 @@ public class Dennis {
 
                         Task removedTask =
                                 tasks.remove(deleteNumber - 1);
+                        storage.save(tasks);
 
                         System.out.println(
                                 "Understood. I've removed this task:");
@@ -130,6 +138,7 @@ public class Dennis {
                                 command.substring("todo".length()).trim());
 
                         tasks.add(todo);
+                        storage.save(tasks);
                         printAddedTask(todo, tasks.size());
                         break;
 
@@ -149,6 +158,7 @@ public class Dennis {
                                 new Deadline(deadlineDescription, by);
 
                         tasks.add(deadline);
+                        storage.save(tasks);
                         printAddedTask(deadline, tasks.size());
                         break;
 
@@ -175,6 +185,7 @@ public class Dennis {
                                 new Event(eventDescription, from, to);
 
                         tasks.add(event);
+                        storage.save(tasks);
                         printAddedTask(event, tasks.size());
                         break;
 

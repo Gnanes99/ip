@@ -14,7 +14,7 @@ public class Deadline extends Task {
                     "I'm sorry, deadline must contain a task.");
         }
 
-        return description;
+        return rejectSeparator(description, "A task description");
     }
 
     private static String validateBy(String by)
@@ -24,7 +24,12 @@ public class Deadline extends Task {
                     "deadline must contain a date and time.");
         }
 
-        return by;
+        return rejectSeparator(by, "A deadline date");
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "D | " + getStatusNumber() + " | " + description + " | " + by;
     }
 
     @Override

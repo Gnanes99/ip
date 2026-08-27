@@ -16,7 +16,7 @@ public class Event extends Task {
                     "I'm sorry, event must contain a task.");
         }
 
-        return description;
+        return rejectSeparator(description, "A task description");
     }
 
     private static String validateFrom(String from)
@@ -26,7 +26,7 @@ public class Event extends Task {
                     "The start of an event cannot be empty.");
         }
 
-        return from;
+        return rejectSeparator(from, "An event start");
     }
 
     private static String validateTo(String to)
@@ -36,7 +36,15 @@ public class Event extends Task {
                     "The end of an event cannot be empty.");
         }
 
-        return to;
+        return rejectSeparator(to, "An event end");
+    }
+
+    @Override
+    public String toFileFormat() {
+        // "from" and "to" are kept as separate fields so they can be read
+        // back individually in a later increment.
+        return "E | " + getStatusNumber() + " | " + description
+                + " | " + from + " | " + to;
     }
 
     @Override
