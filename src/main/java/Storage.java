@@ -151,8 +151,9 @@ public class Storage {
      * Turns one saved line back into a {@link Task}. The accepted format is
      * exactly what {@link Task#toFileFormat()} produces: fields separated by
      * {@link Task#SAVE_SEPARATOR}, a type tag of {@code T}, {@code D} or
-     * {@code E}, and a done flag of {@code 0} or {@code 1}. Example:
-     * {@code D | 0 | return book | Sunday}.
+     * {@code E}, and a done flag of {@code 0} or {@code 1}. Dates are stored
+     * in ISO {@code yyyy-MM-dd} form. Example:
+     * {@code D | 0 | return book | 2019-12-01}.
      *
      * @param line a single non-blank line from the save file
      * @return the reconstructed task
