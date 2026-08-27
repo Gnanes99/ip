@@ -190,11 +190,11 @@ _____________________________________________________
 
 ### TC-05: Saving to disk does not disturb the console output
 
-**Aim:** Verify that the Level 7 auto-save (writing `./data/duke.txt` after every
+**Aim:** Verify that the Level 7 auto-save (writing `./data/dennis.txt` after every
 change to the task list) runs silently: adding all three task types, marking,
 unmarking, and deleting must still produce exactly the normal console output,
 with no extra lines, warnings, or stack traces on standard output. The contents
-of the save file are checked separately by inspecting `./data/duke.txt` after the
+of the save file are checked separately by inspecting `./data/dennis.txt` after the
 run; with this input it should contain:
 
 ```text
@@ -255,11 +255,11 @@ _____________________________________________________
 
 ### TC-06: Load saved tasks on start-up
 
-**Aim:** Verify that when `./data/duke.txt` already exists, the chatbot reads it
+**Aim:** Verify that when `./data/dennis.txt` already exists, the chatbot reads it
 on start-up so the previous tasks (including their done/not-done state) are
 available immediately, before the user enters any command.
 
-**Precondition — create `./data/duke.txt` with exactly this content before running:**
+**Precondition — create `./data/dennis.txt` with exactly this content before running:**
 
 ```text
 T | 0 | read book
@@ -296,11 +296,11 @@ _____________________________________________________
 
 ### TC-07: Start cleanly when no save file exists
 
-**Aim:** Verify that on a fresh machine, where `./data/duke.txt` does not exist
+**Aim:** Verify that on a fresh machine, where `./data/dennis.txt` does not exist
 yet, the chatbot starts normally with an empty list and no error on standard
 output.
 
-**Precondition:** `./data/duke.txt` must not exist.
+**Precondition:** `./data/dennis.txt` must not exist.
 
 **Input:**
 
@@ -377,7 +377,7 @@ lines are skipped. (The per-line "Skipping unreadable line ..." notes are
 written to the error stream, so they do not appear in the standard output
 compared here; check them separately with `2>` redirection if desired.)
 
-**Precondition — create `./data/duke.txt` with exactly this content before running:**
+**Precondition — create `./data/dennis.txt` with exactly this content before running:**
 
 ```text
 T | 1 | valid todo

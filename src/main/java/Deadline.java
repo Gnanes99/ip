@@ -1,5 +1,8 @@
+import java.time.LocalDate;
+
 public class Deadline extends Task {
-    private final String by;
+    /** The date the task is due. Stored as a real date, not free text. */
+    private final LocalDate by;
 
     public Deadline(String description, String by)
             throws DennisException {
@@ -17,23 +20,26 @@ public class Deadline extends Task {
         return rejectSeparator(description, "A task description");
     }
 
-    private static String validateBy(String by)
+    private static LocalDate validateBy(String by)
             throws DennisException {
         if (by.isBlank()) {
             throw new DennisException(
                     "deadline must contain a date and time.");
         }
 
-        return rejectSeparator(by, "A deadline date");
+        // parseDate enforces the yyyy-MM-dd format; a LocalDate can never
+        // contain the save-file separator, so rejectSeparator is not needed.
+        return parseDate(by, "A deadline date");
     }
 
     @Override
     public String toFileFormat() {
+        // by.toString() is ISO yyyy-MM-dd, the same form parseDate accepts.
         return "D | " + getStatusNumber() + " | " + description + " | " + by;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + formatDate(by) + ")";
     }
 }

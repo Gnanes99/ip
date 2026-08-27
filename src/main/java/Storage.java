@@ -12,7 +12,7 @@ import java.util.List;
  *
  * <p>Design notes:</p>
  * <ul>
- *   <li><b>Location.</b> The file is {@code ./data/duke.txt}, built from a
+ *   <li><b>Location.</b> The file is {@code ./data/dennis.txt}, built from a
  *       relative path with {@link Path#of(String, String...)} so it works on
  *       any operating system and any machine. An absolute path such as
  *       {@code C:\data} would break when the project is moved.</li>
@@ -39,11 +39,11 @@ public class Storage {
     private final Path filePath;
 
     /**
-     * Creates a storage that reads and writes {@code ./data/duke.txt},
+     * Creates a storage that reads and writes {@code ./data/dennis.txt},
      * relative to the directory the program is started from.
      */
     public Storage() {
-        this.filePath = Path.of("data", "duke.txt");
+        this.filePath = Path.of("data", "dennis.txt");
     }
 
     /**

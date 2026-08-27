@@ -53,7 +53,7 @@ public class Dennis {
         Scanner scan = new Scanner(System.in);
 
         // Level 7: reload any previously saved tasks on start-up, then save
-        // back to ./data/duke.txt after every change to the list.
+        // back to ./data/dennis.txt after every change to the list.
         Storage storage = new Storage();
         ArrayList<Task> tasks = storage.load();
 

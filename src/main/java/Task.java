@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+
 public abstract class Task {
     protected final String description;
     private boolean isDone;
@@ -39,6 +44,52 @@ public abstract class Task {
 
     /** Field separator used in the save-file format (see {@link #toFileFormat()}). */
     public static final String SAVE_SEPARATOR = " | ";
+
+    /**
+     * Format used when showing a date to the user, e.g. {@code Dec 01 2019}.
+     * {@link Locale#ENGLISH} is pinned so the month abbreviation is always the
+     * English one regardless of the machine's default locale.
+     */
+    private static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+
+    /**
+     * Parses user-supplied text into a {@link LocalDate}. The only accepted
+     * form is ISO {@code yyyy-MM-dd} (e.g. {@code 2019-12-01}), which is also
+     * exactly what {@link LocalDate#toString()} writes to the save file, so a
+     * date can be read back with this same method.
+     *
+     * <p>Zero-padding is required: {@code 2019-1-5} is rejected.</p>
+     *
+     * @param raw       the trimmed text for one date field
+     * @param fieldName human-readable field name, used in the error message
+     * @return the parsed date
+     * @throws DennisException if {@code raw} is blank or not a valid
+     *                         {@code yyyy-MM-dd} date
+     */
+    protected static LocalDate parseDate(String raw, String fieldName)
+            throws DennisException {
+        if (raw.isBlank()) {
+            throw new DennisException(fieldName + " cannot be empty.");
+        }
+
+        try {
+            return LocalDate.parse(raw.trim());
+        } catch (DateTimeParseException e) {
+            throw new DennisException(fieldName
+                    + " must be a date in yyyy-MM-dd form, e.g. 2019-12-01.");
+        }
+    }
+
+    /**
+     * Renders a date for display to the user using {@link #DISPLAY_FORMAT}.
+     *
+     * @param date the date to format
+     * @return the date as {@code MMM dd yyyy}, e.g. {@code Dec 01 2019}
+     */
+    protected static String formatDate(LocalDate date) {
+        return date.format(DISPLAY_FORMAT);
+    }
 
     /**
      * Rejects field text that would clash with the save-file format. Because
