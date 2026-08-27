@@ -12,7 +12,7 @@ import java.util.List;
  *
  * <p>Design notes:</p>
  * <ul>
- *   <li><b>Location.</b> The file is {@code ./data/duke.txt}, built from a
+ *   <li><b>Location.</b> The file is {@code ./data/dennis.txt}, built from a
  *       relative path with {@link Path#of(String, String...)} so it works on
  *       any operating system and any machine. An absolute path such as
  *       {@code C:\data} would break when the project is moved.</li>
@@ -39,11 +39,11 @@ public class Storage {
     private final Path filePath;
 
     /**
-     * Creates a storage that reads and writes {@code ./data/duke.txt},
+     * Creates a storage that reads and writes {@code ./data/dennis.txt},
      * relative to the directory the program is started from.
      */
     public Storage() {
-        this.filePath = Path.of("data", "duke.txt");
+        this.filePath = Path.of("data", "dennis.txt");
     }
 
     /**
@@ -151,8 +151,9 @@ public class Storage {
      * Turns one saved line back into a {@link Task}. The accepted format is
      * exactly what {@link Task#toFileFormat()} produces: fields separated by
      * {@link Task#SAVE_SEPARATOR}, a type tag of {@code T}, {@code D} or
-     * {@code E}, and a done flag of {@code 0} or {@code 1}. Example:
-     * {@code D | 0 | return book | Sunday}.
+     * {@code E}, and a done flag of {@code 0} or {@code 1}. Dates are stored
+     * in ISO {@code yyyy-MM-dd} form. Example:
+     * {@code D | 0 | return book | 2019-12-01}.
      *
      * @param line a single non-blank line from the save file
      * @return the reconstructed task

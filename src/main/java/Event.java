@@ -1,6 +1,10 @@
+import java.time.LocalDate;
+
 public class Event extends Task {
-    private final String from;
-    private final String to;
+    /** Start date of the event. Stored as a real date, not free text. */
+    private final LocalDate from;
+    /** End date of the event. */
+    private final LocalDate to;
 
     public Event(String description, String from, String to)
             throws DennisException {
@@ -19,37 +23,43 @@ public class Event extends Task {
         return rejectSeparator(description, "A task description");
     }
 
-    private static String validateFrom(String from)
+    private static LocalDate validateFrom(String from)
             throws DennisException {
         if (from.isBlank()) {
             throw new DennisException(
                     "The start of an event cannot be empty.");
         }
 
-        return rejectSeparator(from, "An event start");
+        return parseDate(from, "An event start");
     }
 
-    private static String validateTo(String to)
+    private static LocalDate validateTo(String to)
             throws DennisException {
         if (to.isBlank()) {
             throw new DennisException(
                     "The end of an event cannot be empty.");
         }
 
-        return rejectSeparator(to, "An event end");
+        return parseDate(to, "An event end");
     }
 
     @Override
     public String toFileFormat() {
-        // "from" and "to" are kept as separate fields so they can be read
-        // back individually in a later increment.
+        // from/to are written as ISO yyyy-MM-dd, the form parseDate accepts.
         return "E | " + getStatusNumber() + " | " + description
                 + " | " + from + " | " + to;
     }
 
     @Override
+    public boolean occursOn(LocalDate date) {
+        // Inclusive on both ends: an event counts on its start and end dates
+        // and every day in between.
+        return !date.isBefore(from) && !date.isAfter(to);
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString()
-                + " (from: " + from + " to: " + to + ")";
+                + " (from: " + formatDate(from) + " to: " + formatDate(to) + ")";
     }
 }
