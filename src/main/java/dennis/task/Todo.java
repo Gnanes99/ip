@@ -3,7 +3,7 @@ package dennis.task;
 import dennis.DennisException;
 
 /**
- * A task with nothing but a description &mdash; no date attached.
+ * A task with nothing but a description; no date attached.
  */
 public class Todo extends Task {
     /**

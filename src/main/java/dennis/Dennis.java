@@ -10,13 +10,12 @@ import dennis.ui.Ui;
  * Entry point and orchestrator of the chatbot.
  *
  * <p>{@code Dennis} owns the three collaborators the program is built from
- * &mdash; a {@link Ui} for console input/output, a {@link Storage} for the
- * save file, and a {@link TaskList} for the tasks in memory &mdash; and runs
- * the read&ndash;parse&ndash;execute loop that ties them together. It holds no
- * command logic of its own: {@link Parser} turns each line into a
- * {@link Command} and the command carries itself out.</p>
+ * (a {@link Ui} for console input/output, a {@link Storage} for the save
+ * file, and a {@link TaskList} for the tasks in memory) and runs the
+ * read-parse-execute loop that ties them together. It holds no command
+ * logic of its own: {@link Parser} turns each line into a {@link Command}
+ * and the command carries itself out.</p>
  */
-// reused existing code, changed banner and filename
 public class Dennis {
     private final Ui ui;
     private final Storage storage;
@@ -29,9 +28,6 @@ public class Dennis {
     public Dennis() {
         ui = new Ui();
         storage = new Storage();
-
-        // Level 7: reload any previously saved tasks on start-up, then save
-        // back to ./data/dennis.txt after every change to the list.
         tasks = new TaskList(storage.load());
     }
 

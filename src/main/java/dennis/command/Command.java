@@ -16,6 +16,10 @@ import dennis.ui.Ui;
  * than extending a growing {@code switch}.</p>
  */
 public abstract class Command {
+    /** For use by subclasses; there is no per-command state to initialise here. */
+    protected Command() {
+    }
+
     /**
      * Carries out this command.
      *
