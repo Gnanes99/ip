@@ -1,3 +1,7 @@
+package dennis.task;
+
+import dennis.DennisException;
+
 public class Todo extends Task {
     public Todo(String description) throws DennisException {
         super(validateDescription(description));

@@ -1,3 +1,8 @@
+package dennis.command;
+
+import dennis.DennisException;
+import dennis.task.TaskList;
+
 /**
  * Shared code for commands that act on one existing task identified by its
  * position in the list: {@code mark}, {@code unmark} and {@code delete}.

@@ -3,8 +3,8 @@
 ## Test environment
 
 - Java version: Java 25
-- Main class: `Dennis`
-- Source files: `src/main/java/*.java`
+- Main class: `dennis.Dennis`
+- Source files: `src/main/java/dennis/*.java` (source root: `src/main/java`)
 - Date format (Level 8): deadline/event dates are entered as `yyyy-MM-dd`
   (e.g. `2019-12-01`) and shown as `MMM dd yyyy` (e.g. `Dec 01 2019`).
 - Isolation: Compile into a temporary directory and start a fresh program for each case.

@@ -1,3 +1,9 @@
+package dennis.command;
+
+import dennis.storage.Storage;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
+
 /**
  * Says goodbye and signals that the program should stop.
  */
