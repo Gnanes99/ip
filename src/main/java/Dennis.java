@@ -4,33 +4,6 @@ import java.time.LocalDate;
 
 // reused existing code, changed banner and filename
 public class Dennis {
-    private static int parseTaskNumber(
-            String command, int commandLength, int taskCount)
-            throws DennisException {
-        String number = command.substring(commandLength).trim();
-
-        if (number.isEmpty()) {
-            throw new DennisException(
-                    "Please enter a task number.");
-        }
-
-        int taskNumber;
-
-        try {
-            taskNumber = Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            throw new DennisException(
-                    "The task number must be an integer.");
-        }
-
-        if (taskNumber < 1 || taskNumber > taskCount) {
-            throw new DennisException(
-                    "That task number exceeds the tasks.");
-        }
-
-        return taskNumber;
-    }
-
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.showWelcome();
@@ -42,27 +15,19 @@ public class Dennis {
 
         while (ui.hasNextCommand()) {
             String command = ui.readCommand();
-            CommandType commandType = CommandType.from(command);
+            CommandType commandType = Parser.parseCommandType(command);
 
             try {
                 switch (commandType) {
                     case BYE:
-                        if (!command.equals("bye")) {
-                            throw new DennisException(
-                                    "I'm sorry, I don't understand "
-                                            + "what you are trying to say :(");
-                        }
+                        Parser.requireBareCommand(command, "bye");
 
                         ui.showGoodbye();
                         ui.showLine();
                         return;
 
                     case LIST:
-                        if (!command.equals("list")) {
-                            throw new DennisException(
-                                    "I'm sorry, I don't understand "
-                                            + "what you are trying to say :(");
-                        }
+                        Parser.requireBareCommand(command, "list");
 
                         ui.showMessage("Here are the tasks in your list:");
 
@@ -72,8 +37,8 @@ public class Dennis {
                         break;
 
                     case MARK:
-                        int markNumber = parseTaskNumber(
-                                command, "mark".length(), tasks.size());
+                        int markNumber = Parser.parseTaskNumber(
+                                command, "mark", tasks.size());
 
                         Task markedTask = tasks.get(markNumber - 1);
                         markedTask.markAsDone();
@@ -83,8 +48,8 @@ public class Dennis {
                         break;
 
                     case UNMARK:
-                        int unmarkNumber = parseTaskNumber(
-                                command, "unmark".length(), tasks.size());
+                        int unmarkNumber = Parser.parseTaskNumber(
+                                command, "unmark", tasks.size());
 
                         Task unmarkedTask = tasks.get(unmarkNumber - 1);
                         unmarkedTask.markAsNotDone();
@@ -94,8 +59,8 @@ public class Dennis {
                         break;
 
                     case DELETE:
-                        int deleteNumber = parseTaskNumber(
-                                command, "delete".length(), tasks.size());
+                        int deleteNumber = Parser.parseTaskNumber(
+                                command, "delete", tasks.size());
 
                         Task removedTask =
                                 tasks.remove(deleteNumber - 1);
@@ -105,8 +70,7 @@ public class Dennis {
                         break;
 
                     case TODO:
-                        Task todo = new Todo(
-                                command.substring("todo".length()).trim());
+                        Task todo = new Todo(Parser.parseTodo(command));
 
                         tasks.add(todo);
                         storage.save(tasks.asList());
@@ -114,19 +78,12 @@ public class Dennis {
                         break;
 
                     case DEADLINE:
-                        int byIndex = command.indexOf(" /by ");
+                        Parser.DeadlineParts deadlineParts =
+                                Parser.parseDeadline(command);
 
-                        if (byIndex < 0) {
-                            throw new DennisException(
-                                    "Use /by to specify the deadline.");
-                        }
-
-                        String deadlineDescription = command.substring(
-                                "deadline".length(), byIndex).trim();
-                        String by = command.substring(byIndex + 5).trim();
-
-                        Task deadline =
-                                new Deadline(deadlineDescription, by);
+                        Task deadline = new Deadline(
+                                deadlineParts.description(),
+                                deadlineParts.by());
 
                         tasks.add(deadline);
                         storage.save(tasks.asList());
@@ -134,26 +91,13 @@ public class Dennis {
                         break;
 
                     case EVENT:
-                        int fromIndex = command.indexOf(" /from ");
-                        int toIndex = command.indexOf(" /to ");
+                        Parser.EventParts eventParts =
+                                Parser.parseEvent(command);
 
-                        if (fromIndex < 0
-                                || toIndex < 0
-                                || toIndex < fromIndex) {
-                            throw new DennisException(
-                                    "Use /from and /to to specify "
-                                            + "the duration of the event.");
-                        }
-
-                        String eventDescription = command.substring(
-                                "event".length(), fromIndex).trim();
-                        String from = command.substring(
-                                fromIndex + 7, toIndex).trim();
-                        String to =
-                                command.substring(toIndex + 5).trim();
-
-                        Task event =
-                                new Event(eventDescription, from, to);
+                        Task event = new Event(
+                                eventParts.description(),
+                                eventParts.from(),
+                                eventParts.to());
 
                         tasks.add(event);
                         storage.save(tasks.asList());
@@ -161,16 +105,7 @@ public class Dennis {
                         break;
 
                     case ON:
-                        String onArg =
-                                command.substring("on".length()).trim();
-
-                        if (onArg.isEmpty()) {
-                            throw new DennisException(
-                                    "Please enter a date, e.g. on 2019-12-01.");
-                        }
-
-                        LocalDate onDate =
-                                Task.parseDate(onArg, "The date");
+                        LocalDate onDate = Parser.parseOnDate(command);
 
                         ui.showMessage("Here are the tasks on "
                                 + Task.formatDate(onDate) + ":");
