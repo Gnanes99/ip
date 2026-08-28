@@ -11,6 +11,8 @@ import dennis.ui.Ui;
  */
 public class DeleteCommand extends TaskCommand {
     /**
+     * Creates a delete command for the task at the given list position.
+     *
      * @param taskNumber position of the task to delete (1 = first task)
      */
     public DeleteCommand(int taskNumber) {

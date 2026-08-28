@@ -19,6 +19,8 @@ public class OnCommand extends Command {
     private final LocalDate date;
 
     /**
+     * Creates a command that lists the tasks falling on the given date.
+     *
      * @param date the date whose tasks should be listed
      */
     public OnCommand(LocalDate date) {

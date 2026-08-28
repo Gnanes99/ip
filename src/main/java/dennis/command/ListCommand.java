@@ -8,6 +8,10 @@ import dennis.ui.Ui;
  * Shows every task in the list, in order, numbered from 1.
  */
 public class ListCommand extends Command {
+    /** Creates the list command. */
+    public ListCommand() {
+    }
+
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.showMessage("Here are the tasks in your list:");

@@ -26,7 +26,7 @@ public class TaskList {
 
     /**
      * Creates a task list backed by the given tasks, e.g. the ones just
-     * read from disk by {@link Storage#load()}.
+     * read from disk by {@link dennis.storage.Storage#load()}.
      *
      * <p>The list is adopted directly rather than copied: {@code load()}
      * returns a fresh list that nothing else keeps a reference to. If the
@@ -81,7 +81,7 @@ public class TaskList {
     /**
      * Returns a read-only view of the tasks in display order, for the
      * parts of the program that need to walk the whole list (for example
-     * {@link Storage} when saving).
+     * {@link dennis.storage.Storage} when saving).
      *
      * @return an unmodifiable list of the current tasks
      */

@@ -11,6 +11,8 @@ import dennis.ui.Ui;
  */
 public class UnmarkCommand extends TaskCommand {
     /**
+     * Creates an unmark command for the task at the given list position.
+     *
      * @param taskNumber position of the task to unmark (1 = first task)
      */
     public UnmarkCommand(int taskNumber) {
