@@ -1,11 +1,11 @@
 package dennis.task;
 
-import dennis.DennisException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+
+import dennis.DennisException;
 
 public abstract class Task {
     protected final String description;

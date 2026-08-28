@@ -1,8 +1,8 @@
 package dennis.task;
 
-import dennis.DennisException;
-
 import java.time.LocalDate;
+
+import dennis.DennisException;
 
 public class Deadline extends Task {
     /** The date the task is due. Stored as a real date, not free text. */

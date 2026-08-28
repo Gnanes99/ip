@@ -1,11 +1,5 @@
 package dennis.storage;
 
-import dennis.DennisException;
-import dennis.task.Deadline;
-import dennis.task.Event;
-import dennis.task.Task;
-import dennis.task.Todo;
-
 import java.io.IOException;
 import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import dennis.DennisException;
+import dennis.task.Deadline;
+import dennis.task.Event;
+import dennis.task.Task;
+import dennis.task.Todo;
 
 /**
  * Saves the task list to disk and loads it back so that tasks persist

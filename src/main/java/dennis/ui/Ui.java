@@ -1,8 +1,8 @@
 package dennis.ui;
 
-import dennis.task.Task;
-
 import java.util.Scanner;
+
+import dennis.task.Task;
 
 /**
  * Handles every interaction with the user: reading command lines from

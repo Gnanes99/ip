@@ -28,6 +28,12 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Coding standard
+
+All Java in this repository (both `src/main/java` and `src/test/java`) must follow the **SE-EDU Java coding standard (basic + intermediate level)**: <https://se-education.org/guides/conventions/java/intermediate.html>.
+
+The standard is captured as the `seedu-java-coding-standard` skill (`.claude/skills/seedu-java-coding-standard/`). **Consult that skill before writing or modifying any `.java` file**, and make sure the change complies before finishing: naming, 4-space indentation, line length, brace style, whitespace, import grouping/ordering (`static` → `java.*` → `org.*` → `dennis.*`, blank line between groups), statement layout, and Javadoc formatting. New code must match the existing code's style; fix violations you touch.
+
 ## Testing
 
 The project is built with Gradle. Run the JUnit test suite with `./gradlew test`.
