@@ -22,6 +22,8 @@ public enum CommandType {
     EVENT,
     /** List the tasks on a given date ({@code on <date>}). */
     ON,
+    /** Find tasks whose description contains a keyword ({@code find <keyword>}). */
+    FIND,
     /** Anything that does not match a known command word. */
     UNKNOWN;
 
@@ -48,6 +50,7 @@ public enum CommandType {
             case "deadline" -> DEADLINE;
             case "event" -> EVENT;
             case "on" -> ON;
+            case "find" -> FIND;
             default -> UNKNOWN;
         };
     }

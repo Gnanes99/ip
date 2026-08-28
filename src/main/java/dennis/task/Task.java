@@ -134,6 +134,18 @@ public abstract class Task {
     }
 
     /**
+     * Reports whether this task's description contains the given keyword.
+     * The match is case-sensitive and considers the description text only,
+     * not the type tag, completion status, or any dates.
+     *
+     * @param keyword the text to search for
+     * @return {@code true} if the description contains {@code keyword}
+     */
+    public boolean matches(String keyword) {
+        return description.contains(keyword);
+    }
+
+    /**
      * Rejects field text that would clash with the save-file format. Because
      * fields are separated by "{@code  | }", a "{@code |}" inside a description
      * or date/time would make the saved line impossible to read back

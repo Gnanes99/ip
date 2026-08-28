@@ -12,6 +12,7 @@ import dennis.command.AddCommand;
 import dennis.command.Command;
 import dennis.command.DeleteCommand;
 import dennis.command.ExitCommand;
+import dennis.command.FindCommand;
 import dennis.command.ListCommand;
 import dennis.command.MarkCommand;
 import dennis.command.OnCommand;
@@ -82,6 +83,11 @@ public class ParserTest {
     @Test
     public void parse_on_returnsOnCommand() throws DennisException {
         assertInstanceOf(OnCommand.class, Parser.parse("on 2019-12-01"));
+    }
+
+    @Test
+    public void parse_find_returnsFindCommand() throws DennisException {
+        assertInstanceOf(FindCommand.class, Parser.parse("find book"));
     }
 
     // --- unrecognised input --------------------------------------------
@@ -193,6 +199,18 @@ public class ParserTest {
         DennisException e = assertThrows(DennisException.class,
                 () -> Parser.parse("on"));
         assertEquals("Please enter a date, e.g. on 2019-12-01.", e.getMessage());
+    }
+
+    @Test
+    public void parse_findWithNoKeyword_asksForAKeyword() {
+        DennisException e = assertThrows(DennisException.class,
+                () -> Parser.parse("find"));
+        assertEquals("Please enter a keyword to search for.", e.getMessage());
+    }
+
+    @Test
+    public void parse_findWithWhitespaceOnlyKeyword_asksForAKeyword() {
+        assertThrows(DennisException.class, () -> Parser.parse("find    "));
     }
 
     @Test

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -241,5 +242,31 @@ public class TaskTest {
     public void occursOn_plainTask_isAlwaysFalse() {
         // Only dated task types (Deadline, Event) override this to return true.
         assertFalse(new TaskStub("read book").occursOn(LocalDate.of(2019, 12, 1)));
+    }
+
+    // ------------------------------------------------------------------
+    // matches(String)
+    // ------------------------------------------------------------------
+
+    @Test
+    public void matches_keywordInDescription_returnsTrue() {
+        assertTrue(new TaskStub("read book").matches("book"));
+    }
+
+    @Test
+    public void matches_keywordAbsent_returnsFalse() {
+        assertFalse(new TaskStub("read book").matches("magazine"));
+    }
+
+    @Test
+    public void matches_partialWord_returnsTrue() {
+        // The keyword is a plain substring, not a whole-word match.
+        assertTrue(new TaskStub("read book").matches("boo"));
+    }
+
+    @Test
+    public void matches_differentCase_returnsFalse() {
+        // Matching is case-sensitive.
+        assertFalse(new TaskStub("read book").matches("Book"));
     }
 }
