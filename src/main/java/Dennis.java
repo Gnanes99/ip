@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 
 
@@ -39,7 +38,7 @@ public class Dennis {
         // Level 7: reload any previously saved tasks on start-up, then save
         // back to ./data/dennis.txt after every change to the list.
         Storage storage = new Storage();
-        ArrayList<Task> tasks = storage.load();
+        TaskList tasks = new TaskList(storage.load());
 
         while (ui.hasNextCommand()) {
             String command = ui.readCommand();
@@ -78,7 +77,7 @@ public class Dennis {
 
                         Task markedTask = tasks.get(markNumber - 1);
                         markedTask.markAsDone();
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
 
                         ui.showMarkedTask(markedTask);
                         break;
@@ -89,7 +88,7 @@ public class Dennis {
 
                         Task unmarkedTask = tasks.get(unmarkNumber - 1);
                         unmarkedTask.markAsNotDone();
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
 
                         ui.showUnmarkedTask(unmarkedTask);
                         break;
@@ -100,7 +99,7 @@ public class Dennis {
 
                         Task removedTask =
                                 tasks.remove(deleteNumber - 1);
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
 
                         ui.showRemovedTask(removedTask, tasks.size());
                         break;
@@ -110,7 +109,7 @@ public class Dennis {
                                 command.substring("todo".length()).trim());
 
                         tasks.add(todo);
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
                         ui.showAddedTask(todo, tasks.size());
                         break;
 
@@ -130,7 +129,7 @@ public class Dennis {
                                 new Deadline(deadlineDescription, by);
 
                         tasks.add(deadline);
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
                         ui.showAddedTask(deadline, tasks.size());
                         break;
 
@@ -157,7 +156,7 @@ public class Dennis {
                                 new Event(eventDescription, from, to);
 
                         tasks.add(event);
-                        storage.save(tasks);
+                        storage.save(tasks.asList());
                         ui.showAddedTask(event, tasks.size());
                         break;
 
