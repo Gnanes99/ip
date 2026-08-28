@@ -8,6 +8,9 @@
 /build/
 src/main/resources/docs/
 
+# Local Gradle settings (machine-specific JDK path)
+/gradle.properties
+
 # MacOS custom attributes files created by Finder
 .DS_Store
 *.iml
