@@ -1,3 +1,5 @@
+package dennis;
+
 import java.io.IOException;
 import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;

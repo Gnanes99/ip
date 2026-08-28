@@ -1,3 +1,5 @@
+package dennis;
+
 /**
  * Adds a ready-made task (todo, deadline or event) to the list and saves
  * the change.

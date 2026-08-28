@@ -1,3 +1,5 @@
+package dennis;
+
 /**
  * Says goodbye and signals that the program should stop.
  */

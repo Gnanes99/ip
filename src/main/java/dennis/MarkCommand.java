@@ -1,11 +1,13 @@
+package dennis;
+
 /**
- * Marks one task as not done and saves the change.
+ * Marks one task as done and saves the change.
  */
-public class UnmarkCommand extends TaskCommand {
+public class MarkCommand extends TaskCommand {
     /**
-     * @param taskNumber position of the task to unmark (1 = first task)
+     * @param taskNumber position of the task to mark (1 = first task)
      */
-    public UnmarkCommand(int taskNumber) {
+    public MarkCommand(int taskNumber) {
         super(taskNumber);
     }
 
@@ -15,9 +17,9 @@ public class UnmarkCommand extends TaskCommand {
         checkInRange(tasks);
 
         Task task = tasks.get(taskNumber - 1);
-        task.markAsNotDone();
+        task.markAsDone();
         storage.save(tasks.asList());
 
-        ui.showUnmarkedTask(task);
+        ui.showMarkedTask(task);
     }
 }

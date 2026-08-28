@@ -1,3 +1,5 @@
+package dennis;
+
 /**
  * Represents a command supported by the Dennis application.
  */

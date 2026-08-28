@@ -1,3 +1,5 @@
+package dennis;
+
 import java.util.Scanner;
 
 /**

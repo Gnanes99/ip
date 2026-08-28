@@ -1,3 +1,5 @@
+package dennis;
+
 /**
  * Represents an error caused by invalid input entered by the user.
  */

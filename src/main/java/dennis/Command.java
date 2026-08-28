@@ -1,3 +1,5 @@
+package dennis;
+
 /**
  * A single user instruction, ready to be carried out.
  *

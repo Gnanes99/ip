@@ -1,3 +1,5 @@
+package dennis;
+
 // reused existing code, changed banner and filename
 public class Dennis {
     private final Ui ui;
