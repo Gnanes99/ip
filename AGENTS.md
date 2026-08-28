@@ -28,6 +28,16 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Testing
+
+The project is built with Gradle. Run the JUnit test suite with `./gradlew test`.
+
+Test files follow the Gradle/JUnit convention: a test for `dennis.foo.Bar` lives at `src/test/java/dennis/foo/BarTest.java`, mirroring the class under `src/main/java`.
+
+**Coverage target:** aim to cover roughly the top 50% highest-value methods, prioritising complex, core, or critical business logic (parsing, domain/task rules, validation). Trivial getters, console output, and glue code do not need tests.
+
+**Keep tests in step with the code:** after every code change, update the JUnit tests in the same change so the suite still builds, still passes, and still meets the 50% target. If you add or change the behaviour of a high-value method, add or adjust its tests; if you remove one, remove its tests.
+
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
