@@ -5,6 +5,7 @@ import dennis.command.AddCommand;
 import dennis.command.Command;
 import dennis.command.DeleteCommand;
 import dennis.command.ExitCommand;
+import dennis.command.FindCommand;
 import dennis.command.ListCommand;
 import dennis.command.MarkCommand;
 import dennis.command.OnCommand;
@@ -92,6 +93,8 @@ public final class Parser {
                     new Event(e.description(), e.from(), e.to()));
         case ON:
             return new OnCommand(parseOnDate(fullCommand));
+        case FIND:
+            return new FindCommand(parseFind(fullCommand));
         case UNKNOWN:
         default:
             throw new DennisException(DONT_UNDERSTAND);
@@ -202,5 +205,18 @@ public final class Parser {
                     "Please enter a date, e.g. on 2019-12-01.");
         }
         return Task.parseDate(date, "The date");
+    }
+
+    /**
+     * Reads the keyword argument of a {@code find} command.
+     *
+     * @throws DennisException if no keyword was given
+     */
+    private static String parseFind(String input) throws DennisException {
+        String keyword = input.substring("find".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new DennisException("Please enter a keyword to search for.");
+        }
+        return keyword;
     }
 }

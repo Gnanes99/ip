@@ -26,6 +26,7 @@ public class CommandTypeTest {
         assertEquals(CommandType.DEADLINE, CommandType.from("deadline"));
         assertEquals(CommandType.EVENT, CommandType.from("event"));
         assertEquals(CommandType.ON, CommandType.from("on"));
+        assertEquals(CommandType.FIND, CommandType.from("find"));
     }
 
     @Test

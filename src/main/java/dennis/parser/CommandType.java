@@ -13,6 +13,7 @@ public enum CommandType {
     DEADLINE,
     EVENT,
     ON,
+    FIND,
     UNKNOWN;
 
     /**
@@ -38,6 +39,7 @@ public enum CommandType {
             case "deadline" -> DEADLINE;
             case "event" -> EVENT;
             case "on" -> ON;
+            case "find" -> FIND;
             default -> UNKNOWN;
         };
     }
