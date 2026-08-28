@@ -1,4 +1,6 @@
-package dennis;
+package dennis.task;
+
+import dennis.DennisException;
 
 public class Todo extends Task {
     public Todo(String description) throws DennisException {

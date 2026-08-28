@@ -1,4 +1,8 @@
-package dennis;
+package dennis.command;
+
+import dennis.storage.Storage;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
 
 /**
  * Shows every task in the list, in order, numbered from 1.

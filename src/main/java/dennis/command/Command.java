@@ -1,4 +1,9 @@
-package dennis;
+package dennis.command;
+
+import dennis.DennisException;
+import dennis.storage.Storage;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
 
 /**
  * A single user instruction, ready to be carried out.

@@ -1,4 +1,7 @@
-package dennis;
+package dennis.command;
+
+import dennis.DennisException;
+import dennis.task.TaskList;
 
 /**
  * Shared code for commands that act on one existing task identified by its

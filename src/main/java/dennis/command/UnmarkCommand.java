@@ -1,4 +1,10 @@
-package dennis;
+package dennis.command;
+
+import dennis.DennisException;
+import dennis.storage.Storage;
+import dennis.task.Task;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
 
 /**
  * Marks one task as not done and saves the change.

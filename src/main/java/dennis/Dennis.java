@@ -1,5 +1,11 @@
 package dennis;
 
+import dennis.command.Command;
+import dennis.parser.Parser;
+import dennis.storage.Storage;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
+
 // reused existing code, changed banner and filename
 public class Dennis {
     private final Ui ui;

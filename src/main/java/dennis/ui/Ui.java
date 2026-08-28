@@ -1,4 +1,6 @@
-package dennis;
+package dennis.ui;
+
+import dennis.task.Task;
 
 import java.util.Scanner;
 

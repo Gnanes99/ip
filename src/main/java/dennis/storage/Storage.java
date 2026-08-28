@@ -1,4 +1,10 @@
-package dennis;
+package dennis.storage;
+
+import dennis.DennisException;
+import dennis.task.Deadline;
+import dennis.task.Event;
+import dennis.task.Task;
+import dennis.task.Todo;
 
 import java.io.IOException;
 import java.nio.charset.MalformedInputException;

@@ -1,4 +1,4 @@
-package dennis;
+package dennis.task;
 
 import java.util.ArrayList;
 import java.util.Collections;

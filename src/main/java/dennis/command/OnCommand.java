@@ -1,4 +1,9 @@
-package dennis;
+package dennis.command;
+
+import dennis.storage.Storage;
+import dennis.task.Task;
+import dennis.task.TaskList;
+import dennis.ui.Ui;
 
 import java.time.LocalDate;
 

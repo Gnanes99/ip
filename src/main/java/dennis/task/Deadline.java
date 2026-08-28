@@ -1,4 +1,6 @@
-package dennis;
+package dennis.task;
+
+import dennis.DennisException;
 
 import java.time.LocalDate;
 
