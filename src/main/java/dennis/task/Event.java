@@ -1,8 +1,8 @@
 package dennis.task;
 
-import dennis.DennisException;
-
 import java.time.LocalDate;
+
+import dennis.DennisException;
 
 public class Event extends Task {
     /** Start date of the event. Stored as a real date, not free text. */

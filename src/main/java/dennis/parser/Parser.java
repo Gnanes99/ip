@@ -1,5 +1,7 @@
 package dennis.parser;
 
+import java.time.LocalDate;
+
 import dennis.DennisException;
 import dennis.command.AddCommand;
 import dennis.command.Command;
@@ -13,8 +15,6 @@ import dennis.task.Deadline;
 import dennis.task.Event;
 import dennis.task.Task;
 import dennis.task.Todo;
-
-import java.time.LocalDate;
 
 /**
  * Makes sense of a raw command line typed by the user and turns it into a
@@ -69,32 +69,32 @@ public final class Parser {
      */
     public static Command parse(String fullCommand) throws DennisException {
         switch (CommandType.from(fullCommand)) {
-        case BYE:
-            requireBareCommand(fullCommand, "bye");
-            return new ExitCommand();
-        case LIST:
-            requireBareCommand(fullCommand, "list");
-            return new ListCommand();
-        case MARK:
-            return new MarkCommand(parseTaskNumber(fullCommand, "mark"));
-        case UNMARK:
-            return new UnmarkCommand(parseTaskNumber(fullCommand, "unmark"));
-        case DELETE:
-            return new DeleteCommand(parseTaskNumber(fullCommand, "delete"));
-        case TODO:
-            return new AddCommand(new Todo(parseTodo(fullCommand)));
-        case DEADLINE:
-            DeadlineParts d = parseDeadline(fullCommand);
-            return new AddCommand(new Deadline(d.description(), d.by()));
-        case EVENT:
-            EventParts e = parseEvent(fullCommand);
-            return new AddCommand(
-                    new Event(e.description(), e.from(), e.to()));
-        case ON:
-            return new OnCommand(parseOnDate(fullCommand));
-        case UNKNOWN:
-        default:
-            throw new DennisException(DONT_UNDERSTAND);
+            case BYE:
+                requireBareCommand(fullCommand, "bye");
+                return new ExitCommand();
+            case LIST:
+                requireBareCommand(fullCommand, "list");
+                return new ListCommand();
+            case MARK:
+                return new MarkCommand(parseTaskNumber(fullCommand, "mark"));
+            case UNMARK:
+                return new UnmarkCommand(parseTaskNumber(fullCommand, "unmark"));
+            case DELETE:
+                return new DeleteCommand(parseTaskNumber(fullCommand, "delete"));
+            case TODO:
+                return new AddCommand(new Todo(parseTodo(fullCommand)));
+            case DEADLINE:
+                DeadlineParts d = parseDeadline(fullCommand);
+                return new AddCommand(new Deadline(d.description(), d.by()));
+            case EVENT:
+                EventParts e = parseEvent(fullCommand);
+                return new AddCommand(
+                        new Event(e.description(), e.from(), e.to()));
+            case ON:
+                return new OnCommand(parseOnDate(fullCommand));
+            case UNKNOWN:
+            default:
+                throw new DennisException(DONT_UNDERSTAND);
         }
     }
 
