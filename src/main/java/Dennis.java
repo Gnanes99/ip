@@ -1,18 +1,10 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 
 // reused existing code, changed banner and filename
 public class Dennis {
-    private static final String line = "_____________________________________________________";
-    private static void printAddedTask(Task task, int taskCount) {
-        System.out.println("Understood. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-    }
-
     private static int parseTaskNumber(
             String command, int commandLength, int taskCount)
             throws DennisException {
@@ -41,25 +33,16 @@ public class Dennis {
     }
 
     public static void main(String[] args) {
-        String banner = " ____                   _     \n"
-                + "|  _ \\  ___ _ __  _ __ (_)___ \n"
-                + "| | | |/ _ \\ '_ \\| '_ \\| / __|\n"
-                + "| |_| |  __/ | | | | | | \\__ \\\n"
-                + "|____/ \\___|_| |_|_| |_|_|___/\n";
-        System.out.println(banner);
-        System.out.println("Hi, my name is Dennis. It is lovely to meet you!");
-        System.out.println("How may I help you today?");
-        System.out.println(line);
-
-        Scanner scan = new Scanner(System.in);
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         // Level 7: reload any previously saved tasks on start-up, then save
         // back to ./data/dennis.txt after every change to the list.
         Storage storage = new Storage();
         ArrayList<Task> tasks = storage.load();
 
-        while (scan.hasNextLine()) {
-            String command = scan.nextLine();
+        while (ui.hasNextCommand()) {
+            String command = ui.readCommand();
             CommandType commandType = CommandType.from(command);
 
             try {
@@ -71,9 +54,8 @@ public class Dennis {
                                             + "what you are trying to say :(");
                         }
 
-                        System.out.println(
-                                "Bye. Looking forward to seeing you again!");
-                        System.out.println(line);
+                        ui.showGoodbye();
+                        ui.showLine();
                         return;
 
                     case LIST:
@@ -83,12 +65,10 @@ public class Dennis {
                                             + "what you are trying to say :(");
                         }
 
-                        System.out.println(
-                                "Here are the tasks in your list:");
+                        ui.showMessage("Here are the tasks in your list:");
 
                         for (int i = 0; i < tasks.size(); i++) {
-                            System.out.println(
-                                    (i + 1) + "." + tasks.get(i));
+                            ui.showMessage((i + 1) + "." + tasks.get(i));
                         }
                         break;
 
@@ -100,9 +80,7 @@ public class Dennis {
                         markedTask.markAsDone();
                         storage.save(tasks);
 
-                        System.out.println(
-                                "Excellent! I've marked this task as done:");
-                        System.out.println("  " + markedTask);
+                        ui.showMarkedTask(markedTask);
                         break;
 
                     case UNMARK:
@@ -113,9 +91,7 @@ public class Dennis {
                         unmarkedTask.markAsNotDone();
                         storage.save(tasks);
 
-                        System.out.println(
-                                "Alright, I've marked this task as not done yet:");
-                        System.out.println("  " + unmarkedTask);
+                        ui.showUnmarkedTask(unmarkedTask);
                         break;
 
                     case DELETE:
@@ -126,12 +102,7 @@ public class Dennis {
                                 tasks.remove(deleteNumber - 1);
                         storage.save(tasks);
 
-                        System.out.println(
-                                "Understood. I've removed this task:");
-                        System.out.println("  " + removedTask);
-                        System.out.println(
-                                "Now there are " + tasks.size()
-                                        + " tasks in the list.");
+                        ui.showRemovedTask(removedTask, tasks.size());
                         break;
 
                     case TODO:
@@ -140,7 +111,7 @@ public class Dennis {
 
                         tasks.add(todo);
                         storage.save(tasks);
-                        printAddedTask(todo, tasks.size());
+                        ui.showAddedTask(todo, tasks.size());
                         break;
 
                     case DEADLINE:
@@ -160,7 +131,7 @@ public class Dennis {
 
                         tasks.add(deadline);
                         storage.save(tasks);
-                        printAddedTask(deadline, tasks.size());
+                        ui.showAddedTask(deadline, tasks.size());
                         break;
 
                     case EVENT:
@@ -187,7 +158,7 @@ public class Dennis {
 
                         tasks.add(event);
                         storage.save(tasks);
-                        printAddedTask(event, tasks.size());
+                        ui.showAddedTask(event, tasks.size());
                         break;
 
                     case ON:
@@ -202,7 +173,7 @@ public class Dennis {
                         LocalDate onDate =
                                 Task.parseDate(onArg, "The date");
 
-                        System.out.println("Here are the tasks on "
+                        ui.showMessage("Here are the tasks on "
                                 + Task.formatDate(onDate) + ":");
 
                         // Show each match at its real position in the list so
@@ -213,12 +184,12 @@ public class Dennis {
                             Task task = tasks.get(i);
                             if (task.occursOn(onDate)) {
                                 anyOnDate = true;
-                                System.out.println((i + 1) + "." + task);
+                                ui.showMessage((i + 1) + "." + task);
                             }
                         }
 
                         if (!anyOnDate) {
-                            System.out.println(
+                            ui.showMessage(
                                     "You have no deadlines or events "
                                             + "on that date.");
                         }
@@ -234,8 +205,8 @@ public class Dennis {
                                 "Unhandled command type: " + commandType);
                 }
             } catch (DennisException e) {
-                System.out.println("ERROR!! " + e.getMessage());
-                System.out.println(line);
+                ui.showError(e.getMessage());
+                ui.showLine();
             }
         }
     }
