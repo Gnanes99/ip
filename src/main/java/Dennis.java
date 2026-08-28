@@ -1,28 +1,37 @@
 // reused existing code, changed banner and filename
 public class Dennis {
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        ui.showWelcome();
+    private final Ui ui;
+    private final Storage storage;
+    private final TaskList tasks;
+
+    public Dennis() {
+        ui = new Ui();
+        storage = new Storage();
 
         // Level 7: reload any previously saved tasks on start-up, then save
         // back to ./data/dennis.txt after every change to the list.
-        Storage storage = new Storage();
-        TaskList tasks = new TaskList(storage.load());
+        tasks = new TaskList(storage.load());
+    }
 
-        while (ui.hasNextCommand()) {
+    public void run() {
+        ui.showWelcome();
+
+        boolean isExit = false;
+        while (!isExit && ui.hasNextCommand()) {
             String fullCommand = ui.readCommand();
 
             try {
                 Command command = Parser.parse(fullCommand);
                 command.execute(tasks, ui, storage);
-
-                if (command.isExit()) {
-                    return;
-                }
+                isExit = command.isExit();
             } catch (DennisException e) {
                 ui.showError(e.getMessage());
                 ui.showLine();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Dennis().run();
     }
 }
