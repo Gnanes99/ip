@@ -7,23 +7,49 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
+/**
+ * Base type for everything the user can put on the list: a description plus a
+ * done/not-done flag.
+ *
+ * <p>Concrete subtypes ({@link Todo}, {@link Deadline}, {@link Event}) add
+ * their own fields and decide how the task is shown and saved. {@code Task}
+ * itself provides the shared pieces: completion tracking, the plain-text
+ * form, and the static helpers for parsing and formatting dates and for
+ * guarding the save-file separator.</p>
+ */
 public abstract class Task {
+    /** The task text as shown to the user. */
     protected final String description;
+
+    /** Whether the task has been completed. */
     private boolean isDone;
 
+    /**
+     * Creates a not-done task with the given description.
+     *
+     * @param description the task text; subclasses validate it (non-blank, no
+     *                    {@code '|'}) before passing it here
+     */
     protected Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /** Marks this task as completed. */
     public void markAsDone() {
         isDone = true;
     }
 
+    /** Marks this task as not completed. */
     public void markAsNotDone() {
         isDone = false;
     }
 
+    /**
+     * Returns the symbol shown in the task's box.
+     *
+     * @return {@code "X"} if the task is done, a single space otherwise
+     */
     public String getStatusIcon() {
         return isDone ? "X" : " ";
     }

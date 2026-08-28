@@ -9,7 +9,7 @@ import dennis.ui.Ui;
  * A single user instruction, ready to be carried out.
  *
  * <p>Each concrete subclass knows how to perform one kind of command
- * (add a task, delete a task, exit, ...). {@link Parser#parse(String)}
+ * (add a task, delete a task, exit, ...). {@link dennis.parser.Parser#parse(String)}
  * turns a line of input into the right {@code Command}, and {@code Dennis}
  * then simply calls {@link #execute} without needing to know which command
  * it received. Adding a new command means writing a new subclass rather

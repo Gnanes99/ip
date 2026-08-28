@@ -16,6 +16,8 @@ public abstract class TaskCommand extends Command {
     protected final int taskNumber;
 
     /**
+     * Stores the target task's position for a subclass command.
+     *
      * @param taskNumber the target task's position (1 = first task)
      */
     protected TaskCommand(int taskNumber) {

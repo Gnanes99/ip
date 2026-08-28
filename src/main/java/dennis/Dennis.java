@@ -6,12 +6,26 @@ import dennis.storage.Storage;
 import dennis.task.TaskList;
 import dennis.ui.Ui;
 
+/**
+ * Entry point and orchestrator of the chatbot.
+ *
+ * <p>{@code Dennis} owns the three collaborators the program is built from
+ * &mdash; a {@link Ui} for console input/output, a {@link Storage} for the
+ * save file, and a {@link TaskList} for the tasks in memory &mdash; and runs
+ * the read&ndash;parse&ndash;execute loop that ties them together. It holds no
+ * command logic of its own: {@link Parser} turns each line into a
+ * {@link Command} and the command carries itself out.</p>
+ */
 // reused existing code, changed banner and filename
 public class Dennis {
     private final Ui ui;
     private final Storage storage;
     private final TaskList tasks;
 
+    /**
+     * Sets up the collaborators and loads any previously saved tasks so the
+     * session resumes where the last one left off.
+     */
     public Dennis() {
         ui = new Ui();
         storage = new Storage();
@@ -21,6 +35,12 @@ public class Dennis {
         tasks = new TaskList(storage.load());
     }
 
+    /**
+     * Runs the main loop: show the greeting, then repeatedly read a command,
+     * parse it, and execute it until the user types {@code bye} or the input
+     * runs out. A {@link DennisException} from a single command is reported to
+     * the user and the loop continues.
+     */
     public void run() {
         ui.showWelcome();
 
@@ -39,6 +59,11 @@ public class Dennis {
         }
     }
 
+    /**
+     * Starts the chatbot.
+     *
+     * @param args command-line arguments; not used
+     */
     public static void main(String[] args) {
         new Dennis().run();
     }

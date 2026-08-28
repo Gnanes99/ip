@@ -11,6 +11,8 @@ import dennis.ui.Ui;
  */
 public class MarkCommand extends TaskCommand {
     /**
+     * Creates a mark command for the task at the given list position.
+     *
      * @param taskNumber position of the task to mark (1 = first task)
      */
     public MarkCommand(int taskNumber) {

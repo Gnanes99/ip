@@ -4,16 +4,34 @@ import dennis.DennisException;
 
 import java.time.LocalDate;
 
+/**
+ * A task that must be done by a single date, shown as
+ * {@code [D][ ] ... (by: Dec 01 2019)}.
+ */
 public class Deadline extends Task {
     /** The date the task is due. Stored as a real date, not free text. */
     private final LocalDate by;
 
+    /**
+     * Creates a deadline with the given description and due date.
+     *
+     * @param description the task text
+     * @param by          the due date in {@code yyyy-MM-dd} form
+     * @throws DennisException if the description is blank or contains
+     *                         {@code '|'}, or {@code by} is blank or not a
+     *                         valid {@code yyyy-MM-dd} date
+     */
     public Deadline(String description, String by)
             throws DennisException {
         super(validateDescription(description));
         this.by = validateBy(by);
     }
 
+    /**
+     * Checks the description and returns it unchanged when acceptable.
+     *
+     * @throws DennisException if it is blank or contains a {@code '|'}
+     */
     private static String validateDescription(String description)
             throws DennisException {
         if (description.isBlank()) {
@@ -24,6 +42,12 @@ public class Deadline extends Task {
         return rejectSeparator(description, "A task description");
     }
 
+    /**
+     * Checks the due-date text and parses it into a {@link LocalDate}.
+     *
+     * @throws DennisException if {@code by} is blank or not a valid
+     *                         {@code yyyy-MM-dd} date
+     */
     private static LocalDate validateBy(String by)
             throws DennisException {
         if (by.isBlank()) {
