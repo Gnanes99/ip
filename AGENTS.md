@@ -34,9 +34,11 @@ All Java in this repository (both `src/main/java` and `src/test/java`) must foll
 
 The standard is captured as the `seedu-java-coding-standard` skill (`.claude/skills/seedu-java-coding-standard/`). **Consult that skill before writing or modifying any `.java` file**, and make sure the change complies before finishing: naming, 4-space indentation, line length, brace style, whitespace, import grouping/ordering (`static` → `java.*` → `org.*` → `dennis.*`, blank line between groups), statement layout, and Javadoc formatting. New code must match the existing code's style; fix violations you touch.
 
+The standard is also enforced mechanically by **Checkstyle** (Gradle `checkstyle` plugin), using the SE-EDU config in `config/checkstyle/`. The skill is the guide for *writing* compliant code; Checkstyle is the gate that *verifies* it. Run `./gradlew checkstyleMain checkstyleTest` (also run automatically as part of `./gradlew check`) after touching any `.java` file, and make sure it passes before finishing. Do not silence a violation with a `//CHECKSTYLE.OFF` comment or a `config/checkstyle/suppressions.xml` entry unless the user approves it.
+
 ## Testing
 
-The project is built with Gradle. Run the JUnit test suite with `./gradlew test`.
+The project is built with Gradle. Run the JUnit test suite with `./gradlew test`. `./gradlew check` runs the tests *and* Checkstyle together.
 
 Test files follow the Gradle/JUnit convention: a test for `dennis.foo.Bar` lives at `src/test/java/dennis/foo/BarTest.java`, mirroring the class under `src/main/java`.
 
