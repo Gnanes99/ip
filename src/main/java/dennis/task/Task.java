@@ -18,6 +18,17 @@ import dennis.DennisException;
  * guarding the save-file separator.</p>
  */
 public abstract class Task {
+    /** Field separator used in the save-file format (see {@link #toFileFormat()}). */
+    public static final String SAVE_SEPARATOR = " | ";
+
+    /**
+     * Format used when showing a date to the user, e.g. {@code Dec 01 2019}.
+     * {@link Locale#ENGLISH} is pinned so the month abbreviation is always the
+     * English one regardless of the machine's default locale.
+     */
+    private static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+
     /** The task text as shown to the user. */
     protected final String description;
 
@@ -71,17 +82,6 @@ public abstract class Task {
      * @return the save-file representation of this task
      */
     public abstract String toFileFormat();
-
-    /** Field separator used in the save-file format (see {@link #toFileFormat()}). */
-    public static final String SAVE_SEPARATOR = " | ";
-
-    /**
-     * Format used when showing a date to the user, e.g. {@code Dec 01 2019}.
-     * {@link Locale#ENGLISH} is pinned so the month abbreviation is always the
-     * English one regardless of the machine's default locale.
-     */
-    private static final DateTimeFormatter DISPLAY_FORMAT =
-            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
     /**
      * Parses user-supplied text into a {@link LocalDate}. The only accepted

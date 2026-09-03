@@ -65,31 +65,31 @@ public class TaskCommandTest {
     public void checkInRange_onePastTheEnd_throwsWithExceedsMessage()
             throws DennisException {
         TaskList tasks = listOf(3);
-        DennisException e = assertThrows(DennisException.class,
-                () -> new RangeProbe(4).check(tasks));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new RangeProbe(4).check(tasks));
         assertEquals("That task number exceeds the tasks.", e.getMessage());
     }
 
     @Test
     public void checkInRange_zero_throwsDennisException() throws DennisException {
         TaskList tasks = listOf(3);
-        assertThrows(DennisException.class,
-                () -> new RangeProbe(0).check(tasks));
+        assertThrows(DennisException.class, () ->
+                new RangeProbe(0).check(tasks));
     }
 
     @Test
     public void checkInRange_negative_throwsDennisException()
             throws DennisException {
         TaskList tasks = listOf(3);
-        assertThrows(DennisException.class,
-                () -> new RangeProbe(-1).check(tasks));
+        assertThrows(DennisException.class, () ->
+                new RangeProbe(-1).check(tasks));
     }
 
     @Test
     public void checkInRange_anyPositionOnEmptyList_throwsDennisException()
             throws DennisException {
         TaskList empty = listOf(0);
-        assertThrows(DennisException.class,
-                () -> new RangeProbe(1).check(empty));
+        assertThrows(DennisException.class, () ->
+                new RangeProbe(1).check(empty));
     }
 }

@@ -94,16 +94,16 @@ public class ParserTest {
 
     @Test
     public void parse_unknownWord_throwsWithDontUnderstandMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("sing"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("sing"));
         assertEquals("I'm sorry, I don't understand what you are trying to say :(",
                 e.getMessage());
     }
 
     @Test
     public void parse_emptyLine_throwsWithDontUnderstandMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse(""));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(""));
         assertEquals("I'm sorry, I don't understand what you are trying to say :(",
                 e.getMessage());
     }
@@ -130,15 +130,15 @@ public class ParserTest {
 
     @Test
     public void parse_markWithNoNumber_throwsAskingForATaskNumber() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("mark"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("mark"));
         assertEquals("Please enter a task number.", e.getMessage());
     }
 
     @Test
     public void parse_markWithNonInteger_throwsAskingForAnInteger() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("mark two"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("mark two"));
         assertEquals("The task number must be an integer.", e.getMessage());
     }
 
@@ -158,29 +158,29 @@ public class ParserTest {
 
     @Test
     public void parse_deadlineWithoutBy_tellsUserToUseBy() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("deadline return book"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("deadline return book"));
         assertEquals("Use /by to specify the deadline.", e.getMessage());
     }
 
     @Test
     public void parse_deadlineWithBadDate_propagatesDateError() {
-        assertThrows(DennisException.class,
-                () -> Parser.parse("deadline return book /by next friday"));
+        assertThrows(DennisException.class, () ->
+                Parser.parse("deadline return book /by next friday"));
     }
 
     @Test
     public void parse_eventWithoutMarkers_tellsUserToUseFromAndTo() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("event fair"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("event fair"));
         assertEquals("Use /from and /to to specify the duration of the event.",
                 e.getMessage());
     }
 
     @Test
     public void parse_eventWithToBeforeFrom_tellsUserToUseFromAndTo() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("event fair /to 2019-12-05 /from 2019-12-02"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("event fair /to 2019-12-05 /from 2019-12-02"));
         assertEquals("Use /from and /to to specify the duration of the event.",
                 e.getMessage());
     }
@@ -189,22 +189,22 @@ public class ParserTest {
 
     @Test
     public void parse_todoWithNoDescription_propagatesTodoError() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("todo"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("todo"));
         assertEquals("I'm sorry, todo must contain a task.", e.getMessage());
     }
 
     @Test
     public void parse_onWithNoDate_asksForADate() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("on"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("on"));
         assertEquals("Please enter a date, e.g. on 2019-12-01.", e.getMessage());
     }
 
     @Test
     public void parse_findWithNoKeyword_asksForAKeyword() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Parser.parse("find"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("find"));
         assertEquals("Please enter a keyword to search for.", e.getMessage());
     }
 

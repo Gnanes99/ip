@@ -22,8 +22,8 @@ public class TodoTest {
 
     @Test
     public void constructor_blankDescription_throwsWithTodoMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Todo(""));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Todo(""));
         assertEquals("I'm sorry, todo must contain a task.", e.getMessage());
     }
 
@@ -34,8 +34,8 @@ public class TodoTest {
 
     @Test
     public void constructor_descriptionWithPipe_throwsSeparatorMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Todo("wash | iron"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Todo("wash | iron"));
         assertEquals("A task description cannot contain the '|' character.",
                 e.getMessage());
     }
