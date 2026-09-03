@@ -110,8 +110,8 @@ public class TaskListTest {
         TaskList list = new TaskList();
         List<Task> view = list.asList();
 
-        assertThrows(UnsupportedOperationException.class,
-                () -> view.add(todo("nope")));
+        assertThrows(UnsupportedOperationException.class, () ->
+                view.add(todo("nope")));
     }
 
     @Test

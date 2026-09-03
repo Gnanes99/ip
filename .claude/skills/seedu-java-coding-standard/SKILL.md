@@ -202,6 +202,16 @@ public double computeLocation(double x, int zone) throws IllegalArgumentExceptio
 - Tests mirror the class under test: `dennis.foo.Bar` →
   `src/test/java/dennis/foo/BarTest.java`, with
   `featureUnderTest_testScenario_expectedBehavior()` method names.
+- **Checkstyle enforces this standard.** The rules live in
+  `config/checkstyle/` (the SE-EDU config). Run
+  `./gradlew checkstyleMain checkstyleTest` (or `./gradlew check`) and make it
+  pass before finishing. A few things Checkstyle is stricter about than prose
+  review: `DeclarationOrder` (static fields first, then instance fields, then
+  constructors, then methods — access order `public → protected → package →
+  private` within each), `OverloadMethodsDeclarationOrder` (overloads grouped
+  together), a newline at end of file, and wrapping a line *before* an operator
+  and *after* `(` / `,` (so a wrapped lambda argument reads
+  `foo(Bar.class, () ->` then the body on the next line).
 
 ---
 

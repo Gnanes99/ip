@@ -34,37 +34,37 @@ public class EventTest {
 
     @Test
     public void constructor_blankDescription_throwsWithEventMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event(" ", FROM, TO));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(" ", FROM, TO));
         assertEquals("I'm sorry, event must contain a task.", e.getMessage());
     }
 
     @Test
     public void constructor_descriptionWithPipe_throwsSeparatorMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event("a|b", FROM, TO));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event("a|b", FROM, TO));
         assertEquals("A task description cannot contain the '|' character.",
                 e.getMessage());
     }
 
     @Test
     public void constructor_blankStart_throwsWithStartMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event(DESC, "  ", TO));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, "  ", TO));
         assertEquals("The start of an event cannot be empty.", e.getMessage());
     }
 
     @Test
     public void constructor_blankEnd_throwsWithEndMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event(DESC, FROM, ""));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, FROM, ""));
         assertEquals("The end of an event cannot be empty.", e.getMessage());
     }
 
     @Test
     public void constructor_unparseableStart_throwsDateFormatMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event(DESC, "soon", TO));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, "soon", TO));
         assertEquals(
                 "An event start must be a date in yyyy-MM-dd form, e.g. 2019-12-01.",
                 e.getMessage());
@@ -72,8 +72,8 @@ public class EventTest {
 
     @Test
     public void constructor_unparseableEnd_throwsDateFormatMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Event(DESC, FROM, "later"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, FROM, "later"));
         assertEquals(
                 "An event end must be a date in yyyy-MM-dd form, e.g. 2019-12-01.",
                 e.getMessage());

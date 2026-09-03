@@ -67,40 +67,40 @@ public class TaskTest {
 
     @Test
     public void parseDate_emptyString_messageNamesFieldAndSaysEmpty() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Task.parseDate("", "The deadline"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Task.parseDate("", "The deadline"));
         assertEquals("The deadline cannot be empty.", e.getMessage());
     }
 
     @Test
     public void parseDate_whitespaceOnly_throwsDennisException() {
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("   ", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("   ", "The date"));
     }
 
     @Test
     public void parseDate_missingZeroPadding_throwsDennisException() {
         // "2019-1-5" is rejected; ISO form requires yyyy-MM-dd exactly.
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("2019-1-5", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("2019-1-5", "The date"));
     }
 
     @Test
     public void parseDate_slashSeparators_throwsDennisException() {
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("2019/12/01", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("2019/12/01", "The date"));
     }
 
     @Test
     public void parseDate_dayMonthYearOrder_throwsDennisException() {
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("01-12-2019", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("01-12-2019", "The date"));
     }
 
     @Test
     public void parseDate_nonDateText_messageShowsExpectedFormat() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Task.parseDate("tomorrow", "The date"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Task.parseDate("tomorrow", "The date"));
         assertEquals(
                 "The date must be a date in yyyy-MM-dd form, e.g. 2019-12-01.",
                 e.getMessage());
@@ -108,22 +108,22 @@ public class TaskTest {
 
     @Test
     public void parseDate_monthAboveTwelve_throwsDennisException() {
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("2019-13-01", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("2019-13-01", "The date"));
     }
 
     @Test
     public void parseDate_dayBeyondMonthLength_throwsDennisException() {
         // April has 30 days, so the 31st is not a real date.
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("2019-04-31", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("2019-04-31", "The date"));
     }
 
     @Test
     public void parseDate_leapDayInNonLeapYear_throwsDennisException() {
         // 2019 is not a leap year, so Feb 29 does not exist.
-        assertThrows(DennisException.class,
-                () -> Task.parseDate("2019-02-29", "The date"));
+        assertThrows(DennisException.class, () ->
+                Task.parseDate("2019-02-29", "The date"));
     }
 
     // ------------------------------------------------------------------
@@ -175,14 +175,14 @@ public class TaskTest {
 
     @Test
     public void rejectSeparator_valueContainingPipe_throwsDennisException() {
-        assertThrows(DennisException.class,
-                () -> Task.rejectSeparator("chapter 1 | 2", "A task description"));
+        assertThrows(DennisException.class, () ->
+                Task.rejectSeparator("chapter 1 | 2", "A task description"));
     }
 
     @Test
     public void rejectSeparator_pipe_messageNamesField() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> Task.rejectSeparator("a|b", "A task description"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                Task.rejectSeparator("a|b", "A task description"));
         assertEquals("A task description cannot contain the '|' character.",
                 e.getMessage());
     }

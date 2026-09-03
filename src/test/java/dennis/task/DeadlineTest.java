@@ -29,30 +29,30 @@ public class DeadlineTest {
 
     @Test
     public void constructor_blankDescription_throwsWithDeadlineMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Deadline("  ", BY));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Deadline("  ", BY));
         assertEquals("I'm sorry, deadline must contain a task.", e.getMessage());
     }
 
     @Test
     public void constructor_descriptionWithPipe_throwsSeparatorMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Deadline("a | b", BY));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Deadline("a | b", BY));
         assertEquals("A task description cannot contain the '|' character.",
                 e.getMessage());
     }
 
     @Test
     public void constructor_blankDueDate_throwsWithDeadlineMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Deadline(DESC, "   "));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Deadline(DESC, "   "));
         assertEquals("deadline must contain a date and time.", e.getMessage());
     }
 
     @Test
     public void constructor_unparseableDueDate_throwsDateFormatMessage() {
-        DennisException e = assertThrows(DennisException.class,
-                () -> new Deadline(DESC, "next friday"));
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Deadline(DESC, "next friday"));
         assertEquals(
                 "A deadline date must be a date in yyyy-MM-dd form, e.g. 2019-12-01.",
                 e.getMessage());
