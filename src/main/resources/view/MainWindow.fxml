@@ -27,7 +27,8 @@
                    prefHeight="42.0" prefWidth="324.0"
                    AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="0.0" />
-        <Button mnemonicParsing="false"
+        <Button fx:id="sendButton"
+                mnemonicParsing="false"
                 onAction="#handleUserInput"
                 text="Send"
                 prefHeight="42.0" prefWidth="76.0"

@@ -28,6 +28,9 @@ public class GuiResponder {
     /** Captures each command's output so it can be returned as a string. */
     private final DialogUi ui;
 
+    /** Whether the most recent command was the exit command. */
+    private boolean isExit;
+
     /**
      * Sets up the session and loads any previously saved tasks, so the GUI
      * resumes where the last run left off (console or GUI, same save file).
@@ -36,6 +39,7 @@ public class GuiResponder {
         storage = new Storage();
         tasks = new TaskList(storage.load());
         ui = new DialogUi();
+        isExit = false;
     }
 
     /**
@@ -48,10 +52,21 @@ public class GuiResponder {
         try {
             Command command = Parser.parse(input);
             command.execute(tasks, ui, storage);
+            isExit = command.isExit();
         } catch (DennisException e) {
             ui.showError(e.getMessage());
         }
         return ui.drain();
+    }
+
+    /**
+     * Returns whether the last {@link #getResponse(String)} call ran the exit
+     * command, meaning the window should now close.
+     *
+     * @return {@code true} if the user's last command was {@code bye}
+     */
+    public boolean isExitRequested() {
+        return isExit;
     }
 
     /**

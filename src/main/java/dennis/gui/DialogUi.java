@@ -11,7 +11,8 @@ import dennis.ui.Ui;
  * an internal buffer. {@link #drain()} returns the text built up since the
  * last call and clears the buffer, ready for the next command. The console
  * {@link Ui} is left completely untouched; this class only adds a second way
- * to receive its output.</p>
+ * to receive its output. The wording here mirrors {@code Ui}'s console
+ * messages, so the two should be kept in step.</p>
  */
 public class DialogUi extends Ui {
     /** Collects the lines of the reply currently being built. */

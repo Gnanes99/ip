@@ -13,10 +13,11 @@ import javafx.scene.layout.HBox;
  *
  * <p>The layout comes from {@code DialogBox.fxml}, loaded with the
  * {@code fx:root} technique so this object is both the controller and the
- * root node. User bubbles stay on the right; Dennis's bubbles are
- * {@link #flip() flipped} to the left.</p>
+ * root node. User bubbles keep the FXML's right alignment; Dennis's bubbles
+ * are {@link #alignLeft() moved} to the left.</p>
  */
 public class DialogBox extends HBox {
+    /** Shows this bubble's message text, wrapping onto multiple lines. */
     @FXML
     private Label dialog;
 
@@ -40,8 +41,8 @@ public class DialogBox extends HBox {
         dialog.setText(text);
     }
 
-    /** Aligns this bubble to the left, for one of Dennis's replies. */
-    private void flip() {
+    /** Moves this bubble to the left edge, marking it as one of Dennis's replies. */
+    private void alignLeft() {
         setAlignment(Pos.TOP_LEFT);
     }
 
@@ -63,7 +64,7 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getDennisDialog(String text) {
         DialogBox box = new DialogBox(text);
-        box.flip();
+        box.alignLeft();
         return box;
     }
 }
