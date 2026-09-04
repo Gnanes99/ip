@@ -34,15 +34,15 @@ public class Ui {
                 + "| | | |/ _ \\ '_ \\| '_ \\| / __|\n"
                 + "| |_| |  __/ | | | | | | \\__ \\\n"
                 + "|____/ \\___|_| |_|_| |_|_|___/\n";
-        System.out.println(banner);
-        System.out.println("Hi, my name is Dennis. It is lovely to meet you!");
-        System.out.println("How may I help you today?");
+        showMessage(banner,
+                "Hi, my name is Dennis. It is lovely to meet you!",
+                "How may I help you today?");
         showLine();
     }
 
     /** Prints the farewell message shown when the user types {@code bye}. */
     public void showGoodbye() {
-        System.out.println("Bye. Looking forward to seeing you again!");
+        showMessage("Bye. Looking forward to seeing you again!");
     }
 
     /**
@@ -69,12 +69,15 @@ public class Ui {
     }
 
     /**
-     * Prints a single line of text to the user.
+     * Prints the given lines of text to the user, each on its own line.
+     * Called with no arguments it prints nothing.
      *
-     * @param message text to display
+     * @param messages the lines to display, in order
      */
-    public void showMessage(String message) {
-        System.out.println(message);
+    public void showMessage(String... messages) {
+        for (String message : messages) {
+            System.out.println(message);
+        }
     }
 
     /**
@@ -83,7 +86,7 @@ public class Ui {
      * @param message explanation of what went wrong
      */
     public void showError(String message) {
-        System.out.println("ERROR!! " + message);
+        showMessage("ERROR!! " + message);
     }
 
     /**
@@ -93,9 +96,9 @@ public class Ui {
      * @param taskCount the number of tasks now in the list
      */
     public void showAddedTask(Task task, int taskCount) {
-        System.out.println("Understood. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        showMessage("Understood. I've added this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -105,9 +108,9 @@ public class Ui {
      * @param taskCount the number of tasks left in the list
      */
     public void showRemovedTask(Task task, int taskCount) {
-        System.out.println("Understood. I've removed this task:");
-        System.out.println("  " + task);
-        System.out.println("Now there are " + taskCount + " tasks in the list.");
+        showMessage("Understood. I've removed this task:",
+                "  " + task,
+                "Now there are " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -116,8 +119,7 @@ public class Ui {
      * @param task the task that was marked
      */
     public void showMarkedTask(Task task) {
-        System.out.println("Excellent! I've marked this task as done:");
-        System.out.println("  " + task);
+        showMessage("Excellent! I've marked this task as done:", "  " + task);
     }
 
     /**
@@ -126,7 +128,7 @@ public class Ui {
      * @param task the task that was unmarked
      */
     public void showUnmarkedTask(Task task) {
-        System.out.println("Alright, I've marked this task as not done yet:");
-        System.out.println("  " + task);
+        showMessage("Alright, I've marked this task as not done yet:",
+                "  " + task);
     }
 }

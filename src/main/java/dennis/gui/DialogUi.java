@@ -37,16 +37,18 @@ public class DialogUi extends Ui {
     }
 
     /**
-     * Appends one line to the reply buffer, inserting a line separator
-     * before it unless it is the first line.
+     * Appends the given lines to the reply buffer, inserting a line separator
+     * before each line that is not the first in the buffer.
      *
-     * @param line the text to add
+     * @param lines the text to add, in order
      */
-    private void append(String line) {
-        if (buffer.length() > 0) {
-            buffer.append(System.lineSeparator());
+    private void append(String... lines) {
+        for (String line : lines) {
+            if (buffer.length() > 0) {
+                buffer.append(System.lineSeparator());
+            }
+            buffer.append(line);
         }
-        buffer.append(line);
     }
 
     /**
@@ -72,8 +74,8 @@ public class DialogUi extends Ui {
     }
 
     @Override
-    public void showMessage(String message) {
-        append(message);
+    public void showMessage(String... messages) {
+        append(messages);
     }
 
     @Override
@@ -93,27 +95,26 @@ public class DialogUi extends Ui {
 
     @Override
     public void showAddedTask(Task task, int taskCount) {
-        append("Understood. I've added this task:");
-        append(taskLine(task));
-        append("Now you have " + taskCount + " tasks in the list.");
+        append("Understood. I've added this task:",
+                taskLine(task),
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     @Override
     public void showRemovedTask(Task task, int taskCount) {
-        append("Understood. I've removed this task:");
-        append(taskLine(task));
-        append("Now there are " + taskCount + " tasks in the list.");
+        append("Understood. I've removed this task:",
+                taskLine(task),
+                "Now there are " + taskCount + " tasks in the list.");
     }
 
     @Override
     public void showMarkedTask(Task task) {
-        append("Excellent! I've marked this task as done:");
-        append(taskLine(task));
+        append("Excellent! I've marked this task as done:", taskLine(task));
     }
 
     @Override
     public void showUnmarkedTask(Task task) {
-        append("Alright, I've marked this task as not done yet:");
-        append(taskLine(task));
+        append("Alright, I've marked this task as not done yet:",
+                taskLine(task));
     }
 }
