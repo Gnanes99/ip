@@ -1,6 +1,8 @@
 package dennis.gui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -60,10 +62,26 @@ public class DialogUiTest {
 
         ui.showAddedTask(todo, 1);
 
-        String sep = System.lineSeparator();
-        String expected = "Understood. I've added this task:" + sep
-                + "  [T][ ] read book" + sep
-                + "Now you have 1 tasks in the list.";
-        assertEquals(expected, ui.drain());
+        String[] lines = ui.drain().split(System.lineSeparator(), -1);
+        assertEquals(3, lines.length);
+        assertEquals("Understood. I've added this task:", lines[0]);
+        assertEquals("Now you have 1 tasks in the list.", lines[2]);
+        assertTrue(lines[1].contains("[T]"));
+        assertTrue(lines[1].endsWith("read book"));
+    }
+
+    @Test
+    public void showAddedTask_longSpacelessDescription_staysOnTheBoxLine()
+            throws DennisException {
+        DialogUi ui = new DialogUi();
+        String longName = "a".repeat(80);
+
+        ui.showAddedTask(new Todo(longName), 1);
+
+        String taskLine = ui.drain().split(System.lineSeparator(), -1)[1];
+        // No plain space between the status box and the description, so the
+        // renderer cannot drop the description onto a line of its own.
+        assertFalse(taskLine.contains("] " + longName.charAt(0)));
+        assertTrue(taskLine.endsWith(longName));
     }
 }

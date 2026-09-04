@@ -15,6 +15,9 @@ import dennis.ui.Ui;
  * messages, so the two should be kept in step.</p>
  */
 public class DialogUi extends Ui {
+    /** Non-breaking space, used to keep a task's prefix on one line. */
+    private static final String NBSP = " ";
+
     /** Collects the lines of the reply currently being built. */
     private final StringBuilder buffer = new StringBuilder();
 
@@ -46,6 +49,28 @@ public class DialogUi extends Ui {
         buffer.append(line);
     }
 
+    /**
+     * Renders a task the way the commands display it ({@code "  " + task}),
+     * but with the leading indent and the {@code [type][status]} box joined
+     * by non-breaking spaces and glued to the description. That keeps a long,
+     * space-less description on the same line as the box, wrapping character
+     * by character from there, instead of being pushed onto a line of its own.
+     *
+     * @param task the task to render
+     * @return the bubble form of the task line
+     */
+    private static String taskLine(Task task) {
+        String rendered = task.toString();
+        int afterBox = rendered.indexOf("] ");
+        if (afterBox < 0) {
+            return "  " + rendered;
+        }
+
+        String box = rendered.substring(0, afterBox + 1).replace(" ", NBSP);
+        String description = rendered.substring(afterBox + 2);
+        return NBSP + NBSP + box + NBSP + description;
+    }
+
     @Override
     public void showMessage(String message) {
         append(message);
@@ -69,26 +94,26 @@ public class DialogUi extends Ui {
     @Override
     public void showAddedTask(Task task, int taskCount) {
         append("Understood. I've added this task:");
-        append("  " + task);
+        append(taskLine(task));
         append("Now you have " + taskCount + " tasks in the list.");
     }
 
     @Override
     public void showRemovedTask(Task task, int taskCount) {
         append("Understood. I've removed this task:");
-        append("  " + task);
+        append(taskLine(task));
         append("Now there are " + taskCount + " tasks in the list.");
     }
 
     @Override
     public void showMarkedTask(Task task) {
         append("Excellent! I've marked this task as done:");
-        append("  " + task);
+        append(taskLine(task));
     }
 
     @Override
     public void showUnmarkedTask(Task task) {
         append("Alright, I've marked this task as not done yet:");
-        append("  " + task);
+        append(taskLine(task));
     }
 }
