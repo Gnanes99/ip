@@ -1,5 +1,7 @@
 package dennis.command;
 
+import java.util.List;
+
 import dennis.storage.Storage;
 import dennis.task.Task;
 import dennis.task.TaskList;
@@ -27,18 +29,16 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showMessage("Here are the matching tasks in your list:");
+        List<Task> matches = tasks.asList().stream()
+                .filter(task -> task.matches(keyword))
+                .toList();
 
-        int matchCount = 0;
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (task.matches(keyword)) {
-                matchCount++;
-                ui.showMessage(matchCount + "." + task);
-            }
+        ui.showMessage("Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            ui.showMessage((i + 1) + "." + matches.get(i));
         }
 
-        if (matchCount == 0) {
+        if (matches.isEmpty()) {
             ui.showMessage("No matching tasks found.");
         }
     }
