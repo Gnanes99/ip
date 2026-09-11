@@ -16,6 +16,7 @@ import dennis.task.Deadline;
 import dennis.task.Event;
 import dennis.task.Task;
 import dennis.task.Todo;
+import dennis.task.WithinPeriodTask;
 
 /**
  * Makes sense of a raw command line typed by the user and turns it into a
@@ -56,6 +57,10 @@ public final class Parser {
     private record EventParts(String description, String from, String to) {
     }
 
+    /** The three pieces of a {@code within} command. */
+    private record WithinParts(String description, String from, String to) {
+    }
+
     /** Prevents instantiation; this is a utility class. */
     private Parser() {
     }
@@ -93,6 +98,10 @@ public final class Parser {
                         new Event(e.description(), e.from(), e.to()));
             case ON:
                 return new OnCommand(parseOnDate(fullCommand));
+            case WITHIN:
+                WithinParts w = parseWithinPeriod(fullCommand);
+                return new AddCommand(
+                        new WithinPeriodTask(w.description(), w.from(), w.to()));
             case FIND:
                 return new FindCommand(parseFind(fullCommand));
             case UNKNOWN:
@@ -205,6 +214,31 @@ public final class Parser {
                     "Please enter a date, e.g. on 2019-12-01.");
         }
         return Task.parseDate(date, "The date");
+    }
+
+    /**
+     * Splits a {@code within} command into its description, window-start
+     * text and window-end text around the {@code /from} and {@code /to}
+     * markers.
+     *
+     * @throws DennisException if {@code /from} or {@code /to} is missing,
+     *                         or they appear in the wrong order
+     */
+    private static WithinParts parseWithinPeriod(String input) throws DennisException {
+        int fromIndex = input.indexOf(FROM_MARKER);
+        int toIndex = input.indexOf(TO_MARKER);
+
+        if (fromIndex < 0 || toIndex < 0 || toIndex < fromIndex) {
+            throw new DennisException("Use /from and /to to specify "
+                    + "the period for this task.");
+        }
+
+        String description =
+                input.substring("within".length(), fromIndex).trim();
+        String from = input.substring(
+                fromIndex + FROM_MARKER.length(), toIndex).trim();
+        String to = input.substring(toIndex + TO_MARKER.length()).trim();
+        return new WithinParts(description, from, to);
     }
 
     /**

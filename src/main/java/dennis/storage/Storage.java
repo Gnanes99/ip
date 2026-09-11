@@ -13,6 +13,7 @@ import dennis.task.Deadline;
 import dennis.task.Event;
 import dennis.task.Task;
 import dennis.task.Todo;
+import dennis.task.WithinPeriodTask;
 
 /**
  * Saves the task list to disk and loads it back so that tasks persist
@@ -42,6 +43,7 @@ public class Storage {
     private static final int TODO_FIELDS = 3;
     private static final int DEADLINE_FIELDS = 4;
     private static final int EVENT_FIELDS = 5;
+    private static final int WITHIN_FIELDS = 5;
 
     /** Location of the save file (relative, OS-independent). */
     private final Path filePath;
@@ -178,8 +180,9 @@ public class Storage {
     /**
      * Turns one saved line back into a {@link Task}. The accepted format is
      * exactly what {@link Task#toFileFormat()} produces: fields separated by
-     * {@link Task#SAVE_SEPARATOR}, a type tag of {@code T}, {@code D} or
-     * {@code E}, and a done flag of {@code 0} or {@code 1}. Dates are stored
+     * {@link Task#SAVE_SEPARATOR}, a type tag of {@code T}, {@code D},
+     * {@code E} or {@code W}, and a done flag of {@code 0} or {@code 1}.
+     * Dates are stored
      * in ISO {@code yyyy-MM-dd} form. Example:
      * {@code D | 0 | return book | 2019-12-01}.
      *
@@ -232,9 +235,12 @@ public class Storage {
             case "E":
                 requireExactFields(parts, EVENT_FIELDS, line);
                 return new Event(description, parts[3].trim(), parts[4].trim());
+            case "W":
+                requireExactFields(parts, WITHIN_FIELDS, line);
+                return new WithinPeriodTask(description, parts[3].trim(), parts[4].trim());
             default:
                 throw new DennisException("unknown task type \"" + type
-                        + "\" (expected T, D or E) in \"" + line + "\"");
+                        + "\" (expected T, D, E or W) in \"" + line + "\"");
         }
     }
 
