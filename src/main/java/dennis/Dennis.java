@@ -46,6 +46,12 @@ public class Dennis {
 
             try {
                 Command command = Parser.parse(fullCommand);
+
+                // Parser.parse never returns null: every branch either returns
+                // a command or throws DennisException. The loop relies on this
+                // when it calls execute without a null check.
+                assert command != null : "Parser.parse returned null";
+
                 command.execute(tasks, ui, storage);
                 isExit = command.isExit();
             } catch (DennisException e) {
