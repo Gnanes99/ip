@@ -51,6 +51,12 @@ public class GuiResponder {
     public String getResponse(String input) {
         try {
             Command command = Parser.parse(input);
+
+            // Parser.parse never returns null: every branch either returns a
+            // command or throws DennisException. This handler relies on that
+            // when it calls execute without a null check.
+            assert command != null : "Parser.parse returned null";
+
             command.execute(tasks, ui, storage);
             isExit = command.isExit();
         } catch (DennisException e) {
