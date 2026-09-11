@@ -40,6 +40,11 @@ public enum CommandType {
 
         String commandWord = input.trim().split("\\s+", 2)[0];
 
+        // The blank check above guarantees input.trim() has at least one
+        // non-space character, so the split always yields a non-empty first
+        // token for the switch to match.
+        assert !commandWord.isEmpty() : "non-blank input must yield a command word";
+
         return switch (commandWord) {
             case "bye" -> BYE;
             case "list" -> LIST;

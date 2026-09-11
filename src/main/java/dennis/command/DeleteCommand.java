@@ -24,6 +24,11 @@ public class DeleteCommand extends TaskCommand {
             throws DennisException {
         checkInRange(tasks);
 
+        // checkInRange has just guaranteed 1 <= taskNumber <= size, so
+        // taskNumber - 1 is a valid 0-based index for the removal below.
+        assert taskNumber >= 1 && taskNumber <= tasks.size()
+                : "checkInRange should have rejected taskNumber " + taskNumber;
+
         Task task = tasks.remove(taskNumber - 1);
         storage.save(tasks.asList());
 
