@@ -86,6 +86,12 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_within_returnsAddCommand() throws DennisException {
+        assertInstanceOf(AddCommand.class, Parser.parse(
+                "within collect certificate /from 2019-01-15 /to 2019-01-25"));
+    }
+
+    @Test
     public void parse_find_returnsFindCommand() throws DennisException {
         assertInstanceOf(FindCommand.class, Parser.parse("find book"));
     }
@@ -182,6 +188,34 @@ public class ParserTest {
         DennisException e = assertThrows(DennisException.class, () ->
                 Parser.parse("event fair /to 2019-12-05 /from 2019-12-02"));
         assertEquals("Use /from and /to to specify the duration of the event.",
+                e.getMessage());
+    }
+
+    // --- within structure errors -------------------------------------
+
+    @Test
+    public void parse_withinWithoutMarkers_tellsUserToUseFromAndTo() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("within collect certificate"));
+        assertEquals("Use /from and /to to specify the period for this task.",
+                e.getMessage());
+    }
+
+    @Test
+    public void parse_withinWithToBeforeFrom_tellsUserToUseFromAndTo() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(
+                        "within collect certificate /to 2019-01-25 /from 2019-01-15"));
+        assertEquals("Use /from and /to to specify the period for this task.",
+                e.getMessage());
+    }
+
+    @Test
+    public void parse_withinWithStartAfterEnd_propagatesOrderError() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(
+                        "within collect certificate /from 2019-01-25 /to 2019-01-15"));
+        assertEquals("The period's start date must not be after its end date.",
                 e.getMessage());
     }
 
