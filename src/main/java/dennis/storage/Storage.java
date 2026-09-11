@@ -198,34 +198,45 @@ public class Storage {
                     + " fields but found " + parts.length + " in \"" + line + "\"");
         }
 
-        String type = parts[0].trim();
         boolean isDone = parseDoneFlag(parts[1].trim(), line);
-        String description = parts[2].trim();
-
-        Task task;
-        switch (type) {
-            case "T":
-                requireExactFields(parts, TODO_FIELDS, line);
-                task = new Todo(description);
-                break;
-            case "D":
-                requireExactFields(parts, DEADLINE_FIELDS, line);
-                task = new Deadline(description, parts[3].trim());
-                break;
-            case "E":
-                requireExactFields(parts, EVENT_FIELDS, line);
-                task = new Event(description, parts[3].trim(), parts[4].trim());
-                break;
-            default:
-                throw new DennisException("unknown task type \"" + type
-                        + "\" (expected T, D or E) in \"" + line + "\"");
-        }
+        Task task = buildTask(parts, line);
 
         if (isDone) {
             task.markAsDone();
         }
 
         return task;
+    }
+
+    /**
+     * Builds the type-specific task described by {@code parts}, once the
+     * common envelope fields (type tag and done flag) have already been read.
+     *
+     * @param parts the line's {@code " | "}-separated fields
+     * @param line  the whole line, for error messages
+     * @return a {@link Todo}, {@link Deadline} or {@link Event} matching the
+     *         type tag in {@code parts[0]}
+     * @throws DennisException if the type tag is unrecognised, or the field
+     *                         count does not match that type
+     */
+    private static Task buildTask(String[] parts, String line) throws DennisException {
+        String type = parts[0].trim();
+        String description = parts[2].trim();
+
+        switch (type) {
+            case "T":
+                requireExactFields(parts, TODO_FIELDS, line);
+                return new Todo(description);
+            case "D":
+                requireExactFields(parts, DEADLINE_FIELDS, line);
+                return new Deadline(description, parts[3].trim());
+            case "E":
+                requireExactFields(parts, EVENT_FIELDS, line);
+                return new Event(description, parts[3].trim(), parts[4].trim());
+            default:
+                throw new DennisException("unknown task type \"" + type
+                        + "\" (expected T, D or E) in \"" + line + "\"");
+        }
     }
 
     /**
