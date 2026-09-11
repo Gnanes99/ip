@@ -74,6 +74,9 @@ tasks.register('runCli', JavaExec) {
     mainClass = 'dennis.Dennis'
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
+    // JavaExec disables assertions by default; turn them on so the assert
+    // statements in the code are checked when running from Gradle.
+    enableAssertions = true
 }
 
 jar {
@@ -89,4 +92,7 @@ shadowJar {
 
 run {
     standardInput = System.in
+    // JavaExec disables assertions by default; turn them on so the assert
+    // statements in the code are checked when running the GUI from Gradle.
+    enableAssertions = true
 }
