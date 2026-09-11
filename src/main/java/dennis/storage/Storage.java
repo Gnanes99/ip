@@ -96,43 +96,12 @@ public class Storage {
      *         missing, empty, unreadable, or entirely corrupted
      */
     public ArrayList<Task> load() {
+        List<String> lines = readLines();
         ArrayList<Task> tasks = new ArrayList<>();
-
-        // Missing file is the normal "first run" case: start with no tasks.
-        if (!Files.exists(filePath)) {
-            return tasks;
-        }
-
-        // The path exists but is a folder, a broken link, or otherwise not a
-        // plain readable file.
-        if (!Files.isRegularFile(filePath)) {
-            System.err.println("Warning: " + filePath + " is not a readable "
-                    + "file; starting with an empty task list.");
-            return tasks;
-        }
-
-        List<String> lines;
-        try {
-            lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
-        } catch (MalformedInputException e) {
-            System.err.println("Warning: " + filePath + " is not valid UTF-8 "
-                    + "text; starting with an empty task list.");
-            return tasks;
-        } catch (IOException e) {
-            System.err.println("Warning: could not read " + filePath + " ("
-                    + e.getMessage() + "); starting with an empty task list.");
-            return tasks;
-        }
 
         int skipped = 0;
         for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-
-            // Strip a UTF-8 byte-order mark that some editors add to line 1.
-            if (i == 0 && !line.isEmpty() && line.charAt(0) == '\uFEFF') {
-                line = line.substring(1);
-            }
-
+            String line = stripLeadingBom(lines.get(i), i);
             if (line.isBlank()) {
                 continue;
             }
@@ -152,6 +121,58 @@ public class Storage {
         }
 
         return tasks;
+    }
+
+    /**
+     * Reads every line of the save file, treating a missing, non-regular, or
+     * unreadable file the same way: as "no saved tasks yet" rather than a
+     * fatal error, since a fresh or damaged save file must never stop
+     * start-up.
+     *
+     * @return the file's lines, or an empty list if it cannot be read
+     */
+    private List<String> readLines() {
+        // Missing file is the normal "first run" case: start with no tasks.
+        if (!Files.exists(filePath)) {
+            return List.of();
+        }
+
+        // The path exists but is a folder, a broken link, or otherwise not a
+        // plain readable file.
+        if (!Files.isRegularFile(filePath)) {
+            System.err.println("Warning: " + filePath + " is not a readable "
+                    + "file; starting with an empty task list.");
+            return List.of();
+        }
+
+        try {
+            return Files.readAllLines(filePath, StandardCharsets.UTF_8);
+        } catch (MalformedInputException e) {
+            System.err.println("Warning: " + filePath + " is not valid UTF-8 "
+                    + "text; starting with an empty task list.");
+            return List.of();
+        } catch (IOException e) {
+            System.err.println("Warning: could not read " + filePath + " ("
+                    + e.getMessage() + "); starting with an empty task list.");
+            return List.of();
+        }
+    }
+
+    /**
+     * Strips a UTF-8 byte-order mark from the first line, if present. Some
+     * editors add one when saving a file as UTF-8; left in place it would
+     * attach itself to the first field of the first task.
+     *
+     * @param line      the raw line as read from the file
+     * @param lineIndex the line's 0-based position in the file
+     * @return {@code line} with a leading BOM removed, if {@code lineIndex}
+     *         is 0 and one was present; {@code line} unchanged otherwise
+     */
+    private static String stripLeadingBom(String line, int lineIndex) {
+        if (lineIndex == 0 && !line.isEmpty() && line.charAt(0) == '\uFEFF') {
+            return line.substring(1);
+        }
+        return line;
     }
 
     /**
@@ -176,34 +197,45 @@ public class Storage {
                     + " fields but found " + parts.length + " in \"" + line + "\"");
         }
 
-        String type = parts[0].trim();
         boolean isDone = parseDoneFlag(parts[1].trim(), line);
-        String description = parts[2].trim();
-
-        Task task;
-        switch (type) {
-            case "T":
-                requireExactFields(parts, TODO_FIELDS, line);
-                task = new Todo(description);
-                break;
-            case "D":
-                requireExactFields(parts, DEADLINE_FIELDS, line);
-                task = new Deadline(description, parts[3].trim());
-                break;
-            case "E":
-                requireExactFields(parts, EVENT_FIELDS, line);
-                task = new Event(description, parts[3].trim(), parts[4].trim());
-                break;
-            default:
-                throw new DennisException("unknown task type \"" + type
-                        + "\" (expected T, D or E) in \"" + line + "\"");
-        }
+        Task task = buildTask(parts, line);
 
         if (isDone) {
             task.markAsDone();
         }
 
         return task;
+    }
+
+    /**
+     * Builds the type-specific task described by {@code parts}, once the
+     * common envelope fields (type tag and done flag) have already been read.
+     *
+     * @param parts the line's {@code " | "}-separated fields
+     * @param line  the whole line, for error messages
+     * @return a {@link Todo}, {@link Deadline} or {@link Event} matching the
+     *         type tag in {@code parts[0]}
+     * @throws DennisException if the type tag is unrecognised, or the field
+     *                         count does not match that type
+     */
+    private static Task buildTask(String[] parts, String line) throws DennisException {
+        String type = parts[0].trim();
+        String description = parts[2].trim();
+
+        switch (type) {
+            case "T":
+                requireExactFields(parts, TODO_FIELDS, line);
+                return new Todo(description);
+            case "D":
+                requireExactFields(parts, DEADLINE_FIELDS, line);
+                return new Deadline(description, parts[3].trim());
+            case "E":
+                requireExactFields(parts, EVENT_FIELDS, line);
+                return new Event(description, parts[3].trim(), parts[4].trim());
+            default:
+                throw new DennisException("unknown task type \"" + type
+                        + "\" (expected T, D or E) in \"" + line + "\"");
+        }
     }
 
     /**
