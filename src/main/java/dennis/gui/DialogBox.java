@@ -32,6 +32,9 @@ public class DialogBox extends HBox {
     /** Radius of the circular avatar, in pixels. */
     private static final double AVATAR_RADIUS = 18.0;
 
+    /** Style class applied to a bubble that is one of Dennis's replies. */
+    private static final String DENNIS_STYLE_CLASS = "dennis-label";
+
     /** Style class applied to a bubble whose message is an error. */
     private static final String ERROR_STYLE_CLASS = "error-label";
 
@@ -93,6 +96,11 @@ public class DialogBox extends HBox {
         dialog.getStyleClass().add(ERROR_STYLE_CLASS);
     }
 
+    /** Marks this bubble as one of Dennis's replies, so it renders in Dennis's style. */
+    private void markAsDennis() {
+        dialog.getStyleClass().add(DENNIS_STYLE_CLASS);
+    }
+
     /**
      * Creates a right-aligned bubble for something the user typed.
      *
@@ -116,6 +124,7 @@ public class DialogBox extends HBox {
         DialogBox box = new DialogBox(text);
         box.alignLeft();
         box.showAvatar();
+        box.markAsDennis();
         if (isError) {
             box.markAsError();
         }
