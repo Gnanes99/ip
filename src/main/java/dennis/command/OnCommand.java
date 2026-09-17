@@ -32,16 +32,16 @@ public class OnCommand extends Command {
         ui.showMessage("Here's what's happening on " + Task.formatDate(date)
                 + ", if you must know.");
 
-        boolean anyOnDate = false;
+        boolean hasMatch = false;
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
             if (task.occursOn(date)) {
-                anyOnDate = true;
+                hasMatch = true;
                 ui.showMessage((i + 1) + "." + task);
             }
         }
 
-        if (!anyOnDate) {
+        if (!hasMatch) {
             ui.showMessage("You have no deadlines or events on that date.");
         }
     }

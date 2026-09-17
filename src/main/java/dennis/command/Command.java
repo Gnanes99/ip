@@ -33,7 +33,7 @@ public abstract class Command {
             throws DennisException;
 
     /**
-     * Whether the program should stop after this command runs.
+     * Returns whether the program should stop after this command runs.
      *
      * @return {@code true} only for the exit command; {@code false} for
      *         every other command (the default)
