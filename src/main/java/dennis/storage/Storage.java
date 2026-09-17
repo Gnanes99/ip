@@ -53,7 +53,18 @@ public class Storage {
      * relative to the directory the program is started from.
      */
     public Storage() {
-        this.filePath = Path.of("data", "dennis.txt");
+        this(Path.of("data", "dennis.txt"));
+    }
+
+    /**
+     * Creates a storage that reads and writes the given file. Mainly for
+     * tests, which point this at a temporary directory instead of the real
+     * save file.
+     *
+     * @param filePath the save file to read from and write to
+     */
+    public Storage(Path filePath) {
+        this.filePath = filePath;
     }
 
     /**
