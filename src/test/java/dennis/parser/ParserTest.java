@@ -130,6 +130,39 @@ public class ParserTest {
         assertThrows(DennisException.class, () -> Parser.parse("list all"));
     }
 
+    // --- surrounding whitespace on the whole line is ignored -----------
+
+    @Test
+    public void parse_byeWithTrailingSpace_returnsExitCommand() throws DennisException {
+        assertInstanceOf(ExitCommand.class, Parser.parse("bye "));
+    }
+
+    @Test
+    public void parse_listWithLeadingSpace_returnsListCommand() throws DennisException {
+        assertInstanceOf(ListCommand.class, Parser.parse(" list"));
+    }
+
+    @Test
+    public void parse_leadingSpaceBeforeTodo_stillRequiresADescription() {
+        // Regression test: before fullCommand was trimmed, " todo" (leading
+        // space) had its description extracted one character short of where
+        // "todo" actually ends, silently producing a bogus one-letter
+        // description instead of correctly rejecting the missing one.
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(" todo"));
+        assertEquals("I'm sorry, todo must contain a task.", e.getMessage());
+    }
+
+    @Test
+    public void parse_leadingSpaceBeforeMark_stillRequiresANumber() {
+        // Same regression, for the keyword.length()-based extraction in
+        // parseTaskNumber: a leading space used to leave "k" (the tail of
+        // "mark") as the argument instead of the empty string.
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(" mark"));
+        assertEquals("Please enter a task number.", e.getMessage());
+    }
+
     // --- mark / unmark / delete argument errors -----------------------
 
     @Test

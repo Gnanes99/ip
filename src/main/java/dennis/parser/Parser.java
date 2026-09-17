@@ -68,12 +68,21 @@ public final class Parser {
     /**
      * Turns one line of user input into the {@link Command} it describes.
      *
-     * @param fullCommand the raw line exactly as the user typed it
+     * @param fullCommand the raw line exactly as the user typed it; leading
+     *                    and trailing whitespace is ignored
      * @return the command to run
      * @throws DennisException if the line is empty, unrecognised, or
      *                         missing details the command needs
      */
     public static Command parse(String fullCommand) throws DennisException {
+        // Every keyword-argument extractor below assumes the command word
+        // starts at index 0 (it does input.substring(keyword.length())), so
+        // leading whitespace must be stripped here, once, before any of them
+        // run. Without this, a line like " todo read book" would have its
+        // description extracted one character short of where it actually
+        // starts.
+        fullCommand = fullCommand.trim();
+
         switch (CommandType.from(fullCommand)) {
             case BYE:
                 requireBareCommand(fullCommand, "bye");
