@@ -29,7 +29,8 @@ public class OnCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showMessage("Here are the tasks on " + Task.formatDate(date) + ":");
+        ui.showMessage("Here's what's happening on " + Task.formatDate(date)
+                + ", if you must know.");
 
         boolean anyOnDate = false;
         for (int i = 0; i < tasks.size(); i++) {

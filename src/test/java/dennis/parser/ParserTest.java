@@ -102,16 +102,14 @@ public class ParserTest {
     public void parse_unknownWord_throwsWithDontUnderstandMessage() {
         DennisException e = assertThrows(DennisException.class, () ->
                 Parser.parse("sing"));
-        assertEquals("I'm sorry, I don't understand what you are trying to say :(",
-                e.getMessage());
+        assertEquals("Meow? I have no idea what that means.", e.getMessage());
     }
 
     @Test
     public void parse_emptyLine_throwsWithDontUnderstandMessage() {
         DennisException e = assertThrows(DennisException.class, () ->
                 Parser.parse(""));
-        assertEquals("I'm sorry, I don't understand what you are trying to say :(",
-                e.getMessage());
+        assertEquals("Meow? I have no idea what that means.", e.getMessage());
     }
 
     @Test

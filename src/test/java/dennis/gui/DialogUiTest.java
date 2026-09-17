@@ -51,7 +51,7 @@ public class DialogUiTest {
     public void showError_isPrefixedWithErrorMarker() {
         DialogUi ui = new DialogUi();
         ui.showError("something went wrong");
-        assertEquals("ERROR!! something went wrong", ui.drain());
+        assertEquals("HISS!! something went wrong", ui.drain());
     }
 
     @Test
@@ -64,8 +64,8 @@ public class DialogUiTest {
 
         String[] lines = ui.drain().split(System.lineSeparator(), -1);
         assertEquals(3, lines.length);
-        assertEquals("Understood. I've added this task:", lines[0]);
-        assertEquals("Now you have 1 tasks in the list.", lines[2]);
+        assertEquals("Purrfect, I've added this task:", lines[0]);
+        assertEquals("Meow you have 1 tasks!", lines[2]);
         assertTrue(lines[1].contains("[T]"));
         assertTrue(lines[1].endsWith("read book"));
     }

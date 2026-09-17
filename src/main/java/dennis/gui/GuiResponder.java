@@ -99,8 +99,6 @@ public class GuiResponder {
      * @return Dennis's welcome message
      */
     public String getGreeting() {
-        return "Hi, my name is Dennis. It is lovely to meet you!"
-                + System.lineSeparator()
-                + "How may I help you today?";
+        return "Purrrrr, I'm awake. I'm Dennis, do you want to play?";
     }
 }
