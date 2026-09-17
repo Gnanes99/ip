@@ -47,7 +47,7 @@ public final class Parser {
 
     /** Shown whenever the input cannot be understood at all. */
     private static final String DONT_UNDERSTAND =
-            "I'm sorry, I don't understand what you are trying to say :(";
+            "Meow? I have no idea what that means.";
 
     /** The two pieces of a {@code deadline} command. */
     private record DeadlineParts(String description, String by) {

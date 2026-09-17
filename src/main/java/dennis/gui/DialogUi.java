@@ -85,36 +85,35 @@ public class DialogUi extends Ui {
 
     @Override
     public void showError(String message) {
-        append("ERROR!! " + message);
+        append("HISS!! " + message);
     }
 
     @Override
     public void showGoodbye() {
-        append("Bye. Looking forward to seeing you again!");
+        append("Time for a cat-nap. Bye!");
     }
 
     @Override
     public void showAddedTask(Task task, int taskCount) {
-        append("Understood. I've added this task:",
+        append("Purrfect, I've added this task:",
                 taskLine(task),
-                "Now you have " + taskCount + " tasks in the list.");
+                "Meow you have " + taskCount + " tasks!");
     }
 
     @Override
     public void showRemovedTask(Task task, int taskCount) {
-        append("Understood. I've removed this task:",
+        append("Scratched this task off the list:",
                 taskLine(task),
-                "Now there are " + taskCount + " tasks in the list.");
+                "Meow there are " + taskCount + " tasks left!");
     }
 
     @Override
     public void showMarkedTask(Task task) {
-        append("Excellent! I've marked this task as done:", taskLine(task));
+        append("Paw-sitively marked as done:", taskLine(task));
     }
 
     @Override
     public void showUnmarkedTask(Task task) {
-        append("Alright, I've marked this task as not done yet:",
-                taskLine(task));
+        append("Un-fur-tunately, back on the list:", taskLine(task));
     }
 }

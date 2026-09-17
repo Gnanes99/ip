@@ -33,7 +33,7 @@ public class FindCommand extends Command {
                 .filter(task -> task.matches(keyword))
                 .toList();
 
-        ui.showMessage("Here are the matching tasks in your list:");
+        ui.showMessage("Purr-fect, found these matching tasks:");
         for (int i = 0; i < matches.size(); i++) {
             ui.showMessage((i + 1) + "." + matches.get(i));
         }

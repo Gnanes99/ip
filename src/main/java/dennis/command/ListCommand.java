@@ -14,7 +14,7 @@ public class ListCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showMessage("Here are the tasks in your list:");
+        ui.showMessage("Here's your list. Try to keep it that way.");
 
         for (int i = 0; i < tasks.size(); i++) {
             ui.showMessage((i + 1) + "." + tasks.get(i));

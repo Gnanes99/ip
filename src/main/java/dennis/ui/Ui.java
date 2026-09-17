@@ -34,15 +34,13 @@ public class Ui {
                 + "| | | |/ _ \\ '_ \\| '_ \\| / __|\n"
                 + "| |_| |  __/ | | | | | | \\__ \\\n"
                 + "|____/ \\___|_| |_|_| |_|_|___/\n";
-        showMessage(banner,
-                "Hi, my name is Dennis. It is lovely to meet you!",
-                "How may I help you today?");
+        showMessage(banner, "Purrrrr, I'm awake. I'm Dennis, do you want to play?");
         showLine();
     }
 
     /** Prints the farewell message shown when the user types {@code bye}. */
     public void showGoodbye() {
-        showMessage("Bye. Looking forward to seeing you again!");
+        showMessage("Time for a cat-nap. Bye!");
     }
 
     /**
@@ -86,7 +84,7 @@ public class Ui {
      * @param message explanation of what went wrong
      */
     public void showError(String message) {
-        showMessage("ERROR!! " + message);
+        showMessage("HISS!! " + message);
     }
 
     /**
@@ -96,9 +94,9 @@ public class Ui {
      * @param taskCount the number of tasks now in the list
      */
     public void showAddedTask(Task task, int taskCount) {
-        showMessage("Understood. I've added this task:",
+        showMessage("Purrfect, I've added this task:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                "Meow you have " + taskCount + " tasks!");
     }
 
     /**
@@ -108,9 +106,9 @@ public class Ui {
      * @param taskCount the number of tasks left in the list
      */
     public void showRemovedTask(Task task, int taskCount) {
-        showMessage("Understood. I've removed this task:",
+        showMessage("Scratched this task off the list:",
                 "  " + task,
-                "Now there are " + taskCount + " tasks in the list.");
+                "Meow there are " + taskCount + " tasks left!");
     }
 
     /**
@@ -119,7 +117,7 @@ public class Ui {
      * @param task the task that was marked
      */
     public void showMarkedTask(Task task) {
-        showMessage("Excellent! I've marked this task as done:", "  " + task);
+        showMessage("Paw-sitively marked as done:", "  " + task);
     }
 
     /**
@@ -128,7 +126,6 @@ public class Ui {
      * @param task the task that was unmarked
      */
     public void showUnmarkedTask(Task task) {
-        showMessage("Alright, I've marked this task as not done yet:",
-                "  " + task);
+        showMessage("Un-fur-tunately, back on the list:", "  " + task);
     }
 }
