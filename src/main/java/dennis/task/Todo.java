@@ -1,5 +1,7 @@
 package dennis.task;
 
+import java.util.Objects;
+
 import dennis.DennisException;
 
 /**
@@ -35,6 +37,27 @@ public class Todo extends Task {
     @Override
     public String toFileFormat() {
         return "T | " + getStatusNumber() + " | " + description;
+    }
+
+    /**
+     * Two todos are equal when they have the same description; completion
+     * status does not count, so this is what {@link TaskList#add} uses to
+     * reject an exact duplicate.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Todo other)) {
+            return false;
+        }
+        return description.equals(other.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Todo.class, description);
     }
 
     @Override

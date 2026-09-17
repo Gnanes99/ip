@@ -68,12 +68,21 @@ public final class Parser {
     /**
      * Turns one line of user input into the {@link Command} it describes.
      *
-     * @param fullCommand the raw line exactly as the user typed it
+     * @param fullCommand the raw line exactly as the user typed it; leading
+     *                    and trailing whitespace is ignored
      * @return the command to run
      * @throws DennisException if the line is empty, unrecognised, or
      *                         missing details the command needs
      */
     public static Command parse(String fullCommand) throws DennisException {
+        // Every keyword-argument extractor below assumes the command word
+        // starts at index 0 (it does input.substring(keyword.length())), so
+        // leading whitespace must be stripped here, once, before any of them
+        // run. Without this, a line like " todo read book" would have its
+        // description extracted one character short of where it actually
+        // starts.
+        fullCommand = fullCommand.trim();
+
         switch (CommandType.from(fullCommand)) {
             case BYE:
                 requireBareCommand(fullCommand, "bye");
@@ -150,6 +159,24 @@ public final class Parser {
     }
 
     /**
+     * Checks whether {@code marker} appears a second time in {@code input}
+     * after its first occurrence at {@code firstIndex}. Used to give a
+     * specific "you used this marker twice" error instead of letting the
+     * second occurrence corrupt the field that follows it (for example,
+     * silently folding a second {@code /by} into the due-date text, where it
+     * would only surface as a confusing "not a valid date" error).
+     *
+     * @param input      the full command line
+     * @param marker     the marker text to look for, e.g. {@code " /by "}
+     * @param firstIndex the marker's already-found first occurrence
+     * @return {@code true} if {@code marker} occurs again after {@code
+     *         firstIndex}
+     */
+    private static boolean hasDuplicateMarker(String input, String marker, int firstIndex) {
+        return input.indexOf(marker, firstIndex + marker.length()) >= 0;
+    }
+
+    /**
      * Extracts the description from a {@code todo} command. The text is
      * returned as-is (it may be empty); {@link Todo} decides whether it is
      * acceptable.
@@ -169,6 +196,9 @@ public final class Parser {
         int byIndex = input.indexOf(BY_MARKER);
         if (byIndex < 0) {
             throw new DennisException("Use /by to specify the deadline.");
+        }
+        if (hasDuplicateMarker(input, BY_MARKER, byIndex)) {
+            throw new DennisException("Use /by only once to specify the deadline.");
         }
 
         String description =
@@ -191,6 +221,11 @@ public final class Parser {
         if (fromIndex < 0 || toIndex < 0 || toIndex < fromIndex) {
             throw new DennisException("Use /from and /to to specify "
                     + "the duration of the event.");
+        }
+        if (hasDuplicateMarker(input, FROM_MARKER, fromIndex)
+                || hasDuplicateMarker(input, TO_MARKER, toIndex)) {
+            throw new DennisException("Use /from and /to only once each "
+                    + "to specify the duration of the event.");
         }
 
         String description =
@@ -231,6 +266,11 @@ public final class Parser {
         if (fromIndex < 0 || toIndex < 0 || toIndex < fromIndex) {
             throw new DennisException("Use /from and /to to specify "
                     + "the period for this task.");
+        }
+        if (hasDuplicateMarker(input, FROM_MARKER, fromIndex)
+                || hasDuplicateMarker(input, TO_MARKER, toIndex)) {
+            throw new DennisException("Use /from and /to only once each "
+                    + "to specify the period for this task.");
         }
 
         String description =

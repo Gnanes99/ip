@@ -1,6 +1,7 @@
 package dennis.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -63,5 +64,34 @@ public class TodoTest {
         Todo t = new Todo("read book");
         t.markAsDone();
         assertEquals("T | 1 | read book", t.toFileFormat());
+    }
+
+    // --- equals / hashCode: used by TaskList to reject duplicates ------
+
+    @Test
+    public void equals_sameDescription_isTrue() throws DennisException {
+        assertEquals(new Todo("read book"), new Todo("read book"));
+    }
+
+    @Test
+    public void equals_differentDescription_isFalse() throws DennisException {
+        assertNotEquals(new Todo("read book"), new Todo("write book"));
+    }
+
+    @Test
+    public void equals_doneStatusIgnored() throws DennisException {
+        Todo done = new Todo("read book");
+        done.markAsDone();
+        assertEquals(done, new Todo("read book"));
+    }
+
+    @Test
+    public void equals_differentTaskType_isFalse() throws DennisException {
+        assertNotEquals(new Todo("read book"), new Deadline("read book", "2019-12-01"));
+    }
+
+    @Test
+    public void hashCode_equalTodos_haveSameHashCode() throws DennisException {
+        assertEquals(new Todo("read book").hashCode(), new Todo("read book").hashCode());
     }
 }

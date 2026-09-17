@@ -130,6 +130,39 @@ public class ParserTest {
         assertThrows(DennisException.class, () -> Parser.parse("list all"));
     }
 
+    // --- surrounding whitespace on the whole line is ignored -----------
+
+    @Test
+    public void parse_byeWithTrailingSpace_returnsExitCommand() throws DennisException {
+        assertInstanceOf(ExitCommand.class, Parser.parse("bye "));
+    }
+
+    @Test
+    public void parse_listWithLeadingSpace_returnsListCommand() throws DennisException {
+        assertInstanceOf(ListCommand.class, Parser.parse(" list"));
+    }
+
+    @Test
+    public void parse_leadingSpaceBeforeTodo_stillRequiresADescription() {
+        // Regression test: before fullCommand was trimmed, " todo" (leading
+        // space) had its description extracted one character short of where
+        // "todo" actually ends, silently producing a bogus one-letter
+        // description instead of correctly rejecting the missing one.
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(" todo"));
+        assertEquals("I'm sorry, todo must contain a task.", e.getMessage());
+    }
+
+    @Test
+    public void parse_leadingSpaceBeforeMark_stillRequiresANumber() {
+        // Same regression, for the keyword.length()-based extraction in
+        // parseTaskNumber: a leading space used to leave "k" (the tail of
+        // "mark") as the argument instead of the empty string.
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse(" mark"));
+        assertEquals("Please enter a task number.", e.getMessage());
+    }
+
     // --- mark / unmark / delete argument errors -----------------------
 
     @Test
@@ -174,6 +207,13 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_deadlineWithByUsedTwice_tellsUserToUseItOnlyOnce() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                Parser.parse("deadline return book /by 2019-12-01 /by 2019-12-05"));
+        assertEquals("Use /by only once to specify the deadline.", e.getMessage());
+    }
+
+    @Test
     public void parse_eventWithoutMarkers_tellsUserToUseFromAndTo() {
         DennisException e = assertThrows(DennisException.class, () ->
                 Parser.parse("event fair"));
@@ -187,6 +227,22 @@ public class ParserTest {
                 Parser.parse("event fair /to 2019-12-05 /from 2019-12-02"));
         assertEquals("Use /from and /to to specify the duration of the event.",
                 e.getMessage());
+    }
+
+    @Test
+    public void parse_eventWithFromUsedTwice_tellsUserToUseEachOnlyOnce() {
+        DennisException e = assertThrows(DennisException.class, () -> Parser.parse(
+                "event fair /from 2019-12-02 /to 2019-12-05 /from 2019-12-06"));
+        assertEquals("Use /from and /to only once each to specify "
+                + "the duration of the event.", e.getMessage());
+    }
+
+    @Test
+    public void parse_eventWithToUsedTwice_tellsUserToUseEachOnlyOnce() {
+        DennisException e = assertThrows(DennisException.class, () -> Parser.parse(
+                "event fair /from 2019-12-02 /to 2019-12-05 /to 2019-12-06"));
+        assertEquals("Use /from and /to only once each to specify "
+                + "the duration of the event.", e.getMessage());
     }
 
     // --- within structure errors -------------------------------------
@@ -206,6 +262,15 @@ public class ParserTest {
                         "within collect certificate /to 2019-01-25 /from 2019-01-15"));
         assertEquals("Use /from and /to to specify the period for this task.",
                 e.getMessage());
+    }
+
+    @Test
+    public void parse_withinWithFromUsedTwice_tellsUserToUseEachOnlyOnce() {
+        DennisException e = assertThrows(DennisException.class, () -> Parser.parse(
+                "within collect certificate /from 2019-01-15 /to 2019-01-25 "
+                        + "/from 2019-01-16"));
+        assertEquals("Use /from and /to only once each to specify "
+                + "the period for this task.", e.getMessage());
     }
 
     @Test

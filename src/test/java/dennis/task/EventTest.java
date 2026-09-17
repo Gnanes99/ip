@@ -2,6 +2,7 @@ package dennis.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -79,6 +80,19 @@ public class EventTest {
                 e.getMessage());
     }
 
+    @Test
+    public void constructor_startAfterEnd_throwsOrderMessage() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, "2019-12-05", "2019-12-02"));
+        assertEquals("The event's start date must not be after its end date.",
+                e.getMessage());
+    }
+
+    @Test
+    public void constructor_fromEqualsTo_doesNotThrow() throws DennisException {
+        new Event(DESC, "2019-12-02", "2019-12-02");
+    }
+
     // --- occursOn: inclusive on both ends ---------------------------
 
     @Test
@@ -106,15 +120,6 @@ public class EventTest {
         assertFalse(sampleEvent().occursOn(LocalDate.of(2019, 12, 6)));
     }
 
-    @Test
-    public void occursOn_invertedRange_neverOccurs() throws DennisException {
-        // The constructor does not require from <= to; when start is after
-        // end, no date can satisfy both bounds.
-        Event inverted = new Event(DESC, "2019-12-05", "2019-12-02");
-        assertFalse(inverted.occursOn(LocalDate.of(2019, 12, 3)));
-        assertFalse(inverted.occursOn(LocalDate.of(2019, 12, 5)));
-    }
-
     // --- text forms ---------------------------------------------
 
     @Test
@@ -137,5 +142,32 @@ public class EventTest {
         e.markAsDone();
         assertEquals("E | 1 | project meeting | 2019-12-02 | 2019-12-05",
                 e.toFileFormat());
+    }
+
+    // --- equals / hashCode: used by TaskList to reject duplicates ------
+
+    @Test
+    public void equals_sameFields_isTrue() throws DennisException {
+        assertEquals(sampleEvent(), sampleEvent());
+    }
+
+    @Test
+    public void equals_differentDescription_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event("other meeting", FROM, TO));
+    }
+
+    @Test
+    public void equals_differentFrom_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event(DESC, "2019-12-03", TO));
+    }
+
+    @Test
+    public void equals_differentTo_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event(DESC, FROM, "2019-12-06"));
+    }
+
+    @Test
+    public void hashCode_equalEvents_haveSameHashCode() throws DennisException {
+        assertEquals(sampleEvent().hashCode(), sampleEvent().hashCode());
     }
 }

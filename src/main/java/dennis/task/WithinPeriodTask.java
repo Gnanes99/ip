@@ -1,6 +1,7 @@
 package dennis.task;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import dennis.DennisException;
 
@@ -112,6 +113,28 @@ public class WithinPeriodTask extends Task {
         // Inclusive on both ends: the task counts on its window's start and
         // end dates and every day in between.
         return !date.isBefore(from) && !date.isAfter(to);
+    }
+
+    /**
+     * Two within-period tasks are equal when they have the same description,
+     * window start and window end; completion status does not count, so
+     * this is what {@link TaskList#add} uses to reject an exact duplicate.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof WithinPeriodTask other)) {
+            return false;
+        }
+        return description.equals(other.description)
+                && from.equals(other.from) && to.equals(other.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(WithinPeriodTask.class, description, from, to);
     }
 
     @Override

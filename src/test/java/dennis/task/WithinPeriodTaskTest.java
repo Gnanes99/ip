@@ -2,6 +2,7 @@ package dennis.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,7 +14,7 @@ import dennis.DennisException;
 
 /**
  * Tests for {@link WithinPeriodTask}: constructor validation (including the
- * from-after-to rejection that {@link Event} does not have), the
+ * from-after-to rejection, which mirrors {@link Event}'s), the
  * inclusive-range {@code occursOn} logic, and the save-file / display text.
  */
 public class WithinPeriodTaskTest {
@@ -143,5 +144,32 @@ public class WithinPeriodTaskTest {
         task.markAsDone();
         assertEquals("W | 1 | collect certificate | 2019-01-15 | 2019-01-25",
                 task.toFileFormat());
+    }
+
+    // --- equals / hashCode: used by TaskList to reject duplicates ------
+
+    @Test
+    public void equals_sameFields_isTrue() throws DennisException {
+        assertEquals(sampleTask(), sampleTask());
+    }
+
+    @Test
+    public void equals_differentDescription_isFalse() throws DennisException {
+        assertNotEquals(sampleTask(), new WithinPeriodTask("other task", FROM, TO));
+    }
+
+    @Test
+    public void equals_differentFrom_isFalse() throws DennisException {
+        assertNotEquals(sampleTask(), new WithinPeriodTask(DESC, "2019-01-16", TO));
+    }
+
+    @Test
+    public void equals_differentTo_isFalse() throws DennisException {
+        assertNotEquals(sampleTask(), new WithinPeriodTask(DESC, FROM, "2019-01-24"));
+    }
+
+    @Test
+    public void hashCode_equalTasks_haveSameHashCode() throws DennisException {
+        assertEquals(sampleTask().hashCode(), sampleTask().hashCode());
     }
 }
