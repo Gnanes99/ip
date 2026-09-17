@@ -75,7 +75,7 @@ public class DeleteCommandTest {
         DennisException e = assertThrows(DennisException.class, () ->
                 new DeleteCommand(3).execute(tasks, new DialogUi(), new Storage(file)));
 
-        assertEquals("That task number exceeds the tasks.", e.getMessage());
+        assertEquals("Index is out of range!!", e.getMessage());
         assertEquals(2, tasks.size());
         assertFalse(Files.exists(file));
     }

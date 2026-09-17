@@ -32,7 +32,7 @@ public abstract class TaskCommand extends Command {
      */
     protected void checkInRange(TaskList tasks) throws DennisException {
         if (taskNumber < 1 || taskNumber > tasks.size()) {
-            throw new DennisException("That task number exceeds the tasks.");
+            throw new DennisException("Index is out of range!!");
         }
     }
 }

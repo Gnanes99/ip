@@ -73,7 +73,7 @@ public class UnmarkCommandTest {
         DennisException e = assertThrows(DennisException.class, () ->
                 new UnmarkCommand(2).execute(tasks, new DialogUi(), new Storage(file)));
 
-        assertEquals("That task number exceeds the tasks.", e.getMessage());
+        assertEquals("Index is out of range!!", e.getMessage());
         assertEquals("[T][X] read book", tasks.get(0).toString());
         assertFalse(Files.exists(file));
     }

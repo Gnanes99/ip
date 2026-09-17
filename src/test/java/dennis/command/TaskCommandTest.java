@@ -71,7 +71,7 @@ public class TaskCommandTest {
         TaskList tasks = listOf(3);
         DennisException e = assertThrows(DennisException.class, () ->
                 new RangeProbe(4).check(tasks));
-        assertEquals("That task number exceeds the tasks.", e.getMessage());
+        assertEquals("Index is out of range!!", e.getMessage());
     }
 
     @Test
