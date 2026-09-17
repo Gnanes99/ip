@@ -74,8 +74,8 @@ public class Deadline extends Task {
 
     /**
      * Two deadlines are equal when they have the same description and due
-     * date; completion status does not count, so this is what {@link
-     * dennis.task.TaskList#add} uses to reject an exact duplicate.
+     * date; completion status does not count, so this is what
+     * {@link TaskList#add} uses to reject an exact duplicate.
      */
     @Override
     public boolean equals(Object obj) {
