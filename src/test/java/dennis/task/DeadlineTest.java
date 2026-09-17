@@ -2,6 +2,7 @@ package dennis.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,5 +104,27 @@ public class DeadlineTest {
         Deadline d = new Deadline(DESC, BY);
         d.markAsDone();
         assertEquals("D | 1 | return book | 2019-12-01", d.toFileFormat());
+    }
+
+    // --- equals / hashCode: used by TaskList to reject duplicates ------
+
+    @Test
+    public void equals_sameDescriptionAndDate_isTrue() throws DennisException {
+        assertEquals(new Deadline(DESC, BY), new Deadline(DESC, BY));
+    }
+
+    @Test
+    public void equals_differentDescription_isFalse() throws DennisException {
+        assertNotEquals(new Deadline(DESC, BY), new Deadline("other task", BY));
+    }
+
+    @Test
+    public void equals_differentDate_isFalse() throws DennisException {
+        assertNotEquals(new Deadline(DESC, BY), new Deadline(DESC, "2019-12-02"));
+    }
+
+    @Test
+    public void hashCode_equalDeadlines_haveSameHashCode() throws DennisException {
+        assertEquals(new Deadline(DESC, BY).hashCode(), new Deadline(DESC, BY).hashCode());
     }
 }

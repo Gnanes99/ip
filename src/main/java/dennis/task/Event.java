@@ -1,6 +1,7 @@
 package dennis.task;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import dennis.DennisException;
 
@@ -111,6 +112,28 @@ public class Event extends Task {
         // Inclusive on both ends: an event counts on its start and end dates
         // and every day in between.
         return !date.isBefore(from) && !date.isAfter(to);
+    }
+
+    /**
+     * Two events are equal when they have the same description, start date
+     * and end date; completion status does not count, so this is what
+     * {@link dennis.task.TaskList#add} uses to reject an exact duplicate.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Event other)) {
+            return false;
+        }
+        return description.equals(other.description)
+                && from.equals(other.from) && to.equals(other.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Event.class, description, from, to);
     }
 
     @Override

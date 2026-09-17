@@ -2,6 +2,7 @@ package dennis.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -141,5 +142,32 @@ public class EventTest {
         e.markAsDone();
         assertEquals("E | 1 | project meeting | 2019-12-02 | 2019-12-05",
                 e.toFileFormat());
+    }
+
+    // --- equals / hashCode: used by TaskList to reject duplicates ------
+
+    @Test
+    public void equals_sameFields_isTrue() throws DennisException {
+        assertEquals(sampleEvent(), sampleEvent());
+    }
+
+    @Test
+    public void equals_differentDescription_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event("other meeting", FROM, TO));
+    }
+
+    @Test
+    public void equals_differentFrom_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event(DESC, "2019-12-03", TO));
+    }
+
+    @Test
+    public void equals_differentTo_isFalse() throws DennisException {
+        assertNotEquals(sampleEvent(), new Event(DESC, FROM, "2019-12-06"));
+    }
+
+    @Test
+    public void hashCode_equalEvents_haveSameHashCode() throws DennisException {
+        assertEquals(sampleEvent().hashCode(), sampleEvent().hashCode());
     }
 }

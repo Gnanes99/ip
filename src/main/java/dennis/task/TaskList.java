@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import dennis.DennisException;
+
 /**
  * Holds the tasks for the current session together with the operations
  * that act on the collection as a whole: adding a task, deleting one by
@@ -14,6 +16,10 @@ import java.util.List;
  * gives the rest of the program a name to talk about. The positions used
  * here are 0-based, matching {@link ArrayList}, so callers that already
  * think in terms of a list index need no translation.</p>
+ *
+ * <p>The list never holds two equal tasks (same type, description, and any
+ * dates; see each {@link Task} subtype's {@code equals}): {@link #add}
+ * rejects an exact duplicate rather than silently storing it twice.</p>
  */
 public class TaskList {
     /** Backing store; its order is the order shown to the user. */
@@ -44,8 +50,15 @@ public class TaskList {
      * Adds a task to the end of the list.
      *
      * @param task the task to add
+     * @throws DennisException if an equal task (same type, description, and
+     *                         any dates) is already in the list
      */
-    public void add(Task task) {
+    public void add(Task task) throws DennisException {
+        if (tasks.contains(task)) {
+            throw new DennisException(
+                    "You already have a task exactly like this one.");
+        }
+
         tasks.add(task);
     }
 

@@ -1,6 +1,7 @@
 package dennis.task;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import dennis.DennisException;
 
@@ -69,6 +70,27 @@ public class Deadline extends Task {
     @Override
     public boolean occursOn(LocalDate date) {
         return by.equals(date);
+    }
+
+    /**
+     * Two deadlines are equal when they have the same description and due
+     * date; completion status does not count, so this is what {@link
+     * dennis.task.TaskList#add} uses to reject an exact duplicate.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Deadline other)) {
+            return false;
+        }
+        return description.equals(other.description) && by.equals(other.by);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Deadline.class, description, by);
     }
 
     @Override

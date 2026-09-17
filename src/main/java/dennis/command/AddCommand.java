@@ -1,5 +1,6 @@
 package dennis.command;
 
+import dennis.DennisException;
 import dennis.storage.Storage;
 import dennis.task.Task;
 import dennis.task.TaskList;
@@ -13,7 +14,9 @@ import dennis.ui.Ui;
  * command line is being parsed, so any problem with its contents (empty
  * description, a {@code '|'} character, an unparseable date) is reported
  * before this command object is even created. By the time {@code execute}
- * runs the task is known to be valid.</p>
+ * runs the task is known to be valid; the one thing still checked here is
+ * that it is not an exact duplicate of a task already in the list, which
+ * {@link TaskList#add} enforces.</p>
  */
 public class AddCommand extends Command {
     /** The already-validated task to add. */
@@ -29,7 +32,8 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage)
+            throws DennisException {
         tasks.add(task);
         storage.save(tasks.asList());
         ui.showAddedTask(task, tasks.size());

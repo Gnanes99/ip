@@ -55,6 +55,30 @@ public class TaskListTest {
     }
 
     @Test
+    public void add_duplicateTask_throwsDennisExceptionAndLeavesListUnchanged()
+            throws DennisException {
+        TaskList list = new TaskList();
+        list.add(todo("read book"));
+
+        DennisException e = assertThrows(DennisException.class, () ->
+                list.add(todo("read book")));
+
+        assertEquals("You already have a task exactly like this one.",
+                e.getMessage());
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    public void add_differentDescription_isNotTreatedAsADuplicate()
+            throws DennisException {
+        TaskList list = new TaskList();
+        list.add(todo("read book"));
+        list.add(todo("write book"));
+
+        assertEquals(2, list.size());
+    }
+
+    @Test
     public void remove_returnsRemovedTaskAndShiftsTheRestDown()
             throws DennisException {
         TaskList list = new TaskList();
