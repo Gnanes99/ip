@@ -8,8 +8,9 @@ import dennis.DennisException;
  * A task that spans a start and end date, shown as
  * {@code [E][ ] ... (from: Dec 02 2019 to: Dec 05 2019)}.
  *
- * <p>The constructor does not require {@code from} to be on or before
- * {@code to}; an inverted range simply matches no date in {@link #occursOn}.</p>
+ * <p>{@code from} equal to {@code to} (a one-day event) is allowed; only a
+ * start strictly after the end is rejected, since that is almost certainly a
+ * mistake rather than a deliberate state.</p>
  */
 public class Event extends Task {
     /** Start date of the event. Stored as a real date, not free text. */
@@ -24,14 +25,16 @@ public class Event extends Task {
      * @param from        the start date in {@code yyyy-MM-dd} form
      * @param to          the end date in {@code yyyy-MM-dd} form
      * @throws DennisException if the description is blank or contains
-     *                         {@code '|'}, or either date is blank or not a
-     *                         valid {@code yyyy-MM-dd} date
+     *                         {@code '|'}, either date is blank or not a
+     *                         valid {@code yyyy-MM-dd} date, or {@code from}
+     *                         is after {@code to}
      */
     public Event(String description, String from, String to)
             throws DennisException {
         super(validateDescription(description));
         this.from = validateFrom(from);
         this.to = validateTo(to);
+        requireNotInverted(this.from, this.to);
     }
 
     /**
@@ -79,6 +82,21 @@ public class Event extends Task {
         }
 
         return parseDate(to, "An event end");
+    }
+
+    /**
+     * Checks that the event is not inverted. {@code from} equal to
+     * {@code to} (a one-day event) is allowed; only a start strictly after
+     * the end is rejected.
+     *
+     * @throws DennisException if {@code from} is after {@code to}
+     */
+    private static void requireNotInverted(LocalDate from, LocalDate to)
+            throws DennisException {
+        if (from.isAfter(to)) {
+            throw new DennisException(
+                    "The event's start date must not be after its end date.");
+        }
     }
 
     @Override

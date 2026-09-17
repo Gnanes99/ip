@@ -79,6 +79,19 @@ public class EventTest {
                 e.getMessage());
     }
 
+    @Test
+    public void constructor_startAfterEnd_throwsOrderMessage() {
+        DennisException e = assertThrows(DennisException.class, () ->
+                new Event(DESC, "2019-12-05", "2019-12-02"));
+        assertEquals("The event's start date must not be after its end date.",
+                e.getMessage());
+    }
+
+    @Test
+    public void constructor_fromEqualsTo_doesNotThrow() throws DennisException {
+        new Event(DESC, "2019-12-02", "2019-12-02");
+    }
+
     // --- occursOn: inclusive on both ends ---------------------------
 
     @Test
@@ -104,15 +117,6 @@ public class EventTest {
     @Test
     public void occursOn_dayAfterEnd_isFalse() throws DennisException {
         assertFalse(sampleEvent().occursOn(LocalDate.of(2019, 12, 6)));
-    }
-
-    @Test
-    public void occursOn_invertedRange_neverOccurs() throws DennisException {
-        // The constructor does not require from <= to; when start is after
-        // end, no date can satisfy both bounds.
-        Event inverted = new Event(DESC, "2019-12-05", "2019-12-02");
-        assertFalse(inverted.occursOn(LocalDate.of(2019, 12, 3)));
-        assertFalse(inverted.occursOn(LocalDate.of(2019, 12, 5)));
     }
 
     // --- text forms ---------------------------------------------
