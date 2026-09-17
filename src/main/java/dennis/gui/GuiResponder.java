@@ -31,6 +31,9 @@ public class GuiResponder {
     /** Whether the most recent command was the exit command. */
     private boolean isExit;
 
+    /** Whether the most recent command failed with a {@link DennisException}. */
+    private boolean isError;
+
     /**
      * Sets up the session and loads any previously saved tasks, so the GUI
      * resumes where the last run left off (console or GUI, same save file).
@@ -40,6 +43,7 @@ public class GuiResponder {
         tasks = new TaskList(storage.load());
         ui = new DialogUi();
         isExit = false;
+        isError = false;
     }
 
     /**
@@ -59,8 +63,10 @@ public class GuiResponder {
 
             command.execute(tasks, ui, storage);
             isExit = command.isExit();
+            isError = false;
         } catch (DennisException e) {
             ui.showError(e.getMessage());
+            isError = true;
         }
         return ui.drain();
     }
@@ -73,6 +79,18 @@ public class GuiResponder {
      */
     public boolean isExitRequested() {
         return isExit;
+    }
+
+    /**
+     * Returns whether the last {@link #getResponse(String)} call failed
+     * because the input could not be understood or was otherwise invalid,
+     * meaning the reply should be shown as an error rather than a normal
+     * message.
+     *
+     * @return {@code true} if the last call caught a {@code DennisException}
+     */
+    public boolean isLastResponseError() {
+        return isError;
     }
 
     /**
