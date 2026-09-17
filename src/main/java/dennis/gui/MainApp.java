@@ -34,7 +34,10 @@ public class MainApp extends Application {
             Parent root = loader.load();
             MainWindow controller = loader.getController();
             controller.setResponder(responder);
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    MainApp.class.getResource("/view/dennis.css").toExternalForm());
+            stage.setScene(scene);
             stage.setTitle("Dennis");
             stage.setResizable(false);
             stage.show();

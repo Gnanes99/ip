@@ -50,7 +50,7 @@ public class MainWindow {
     public void setResponder(GuiResponder guiResponder) {
         responder = guiResponder;
         dialogContainer.getChildren().add(
-                DialogBox.getDennisDialog(responder.getGreeting()));
+                DialogBox.getDennisDialog(responder.getGreeting(), false));
     }
 
     /** Keeps the scroll pane pinned to the latest message. */
@@ -74,7 +74,7 @@ public class MainWindow {
         String response = responder.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input),
-                DialogBox.getDennisDialog(response));
+                DialogBox.getDennisDialog(response, responder.isLastResponseError()));
         userInput.clear();
 
         if (responder.isExitRequested()) {
