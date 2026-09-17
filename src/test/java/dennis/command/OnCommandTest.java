@@ -18,9 +18,8 @@ import dennis.task.Todo;
 
 /**
  * Tests for {@link OnCommand#execute}: that matches are shown at their
- * original list position (not renumbered, unlike {@link FindCommand}), that
- * a plain {@code Todo} never matches any date, and the fallback message
- * shown when nothing falls on the given date.
+ * original list position, that a plain {@code Todo} never matches any date,
+ * and the fallback message shown when nothing falls on the given date.
  */
 public class OnCommandTest {
 

@@ -15,9 +15,9 @@ import dennis.task.TaskList;
 import dennis.task.Todo;
 
 /**
- * Tests for {@link FindCommand#execute}: that matches are shown renumbered
- * from 1 in list order (not at their original position, unlike
- * {@link OnCommand}), and the message shown when nothing matches.
+ * Tests for {@link FindCommand#execute}: that matches are shown at their
+ * real position in the list, the same convention {@link OnCommand} uses,
+ * and the message shown when nothing matches.
  */
 public class FindCommandTest {
 
@@ -29,7 +29,7 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_matchNotFirstInList_isRenumberedFromOne() throws DennisException {
+    public void execute_matchNotFirstInList_shownAtItsOriginalPosition() throws DennisException {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("write essay"));
         tasks.add(new Todo("read book"));
@@ -38,8 +38,8 @@ public class FindCommandTest {
         new FindCommand("book").execute(tasks, ui, storage());
 
         String shown = ui.drain();
-        assertTrue(shown.contains("1.[T][ ] read book"));
-        assertFalse(shown.contains("2.[T][ ] read book"));
+        assertTrue(shown.contains("2.[T][ ] read book"));
+        assertFalse(shown.contains("1.[T][ ] read book"));
     }
 
     @Test

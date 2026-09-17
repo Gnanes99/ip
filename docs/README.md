@@ -20,7 +20,7 @@ Dennis is a desktop chatbot for tracking your tasks: todos, deadlines, events, a
 
 - Words in `UPPER_CASE` are parameters you supply, e.g. in `todo DESCRIPTION`, `DESCRIPTION` could be `todo read book`.
 - Every date is typed as `yyyy-MM-dd`, e.g. `2026-12-01`.
-- `INDEX` refers to the task number shown by the most recent `list` or `on`. `find`'s numbers are for display only; see the [Finding tasks](#finding-tasks-find) note below.
+- `INDEX` refers to the task number shown by the most recent `list`, `find`, or `on`.
 - A description or date cannot contain the `|` character.
 - Dennis won't add a task that's an exact duplicate (same type, description, and dates) of one already on your list.
 
@@ -154,9 +154,10 @@ Expected output:
 ```
 Purr-fect, found these matching tasks:
 1.[T][ ] read book
+2.[D][ ] return book (by: Dec 01 2026)
 ```
 
-> 💡 The search is case-sensitive and matches anywhere in the description, so `find boo` also matches "read **boo**k". The numbers shown here start from 1 in match order, not your task's real position in the list, so don't use them with `mark`, `unmark`, or `delete`. Use `list` first if you need to act on a match.
+> 💡 The search is case-sensitive and matches anywhere in the description, so `find boo` also matches "read **boo**k". "return book" matches too, since it also contains "book". Numbers are the task's real position in the list, so they work directly with `mark`, `unmark`, and `delete`.
 
 ### Viewing tasks on a date: `on`
 

@@ -1,7 +1,5 @@
 package dennis.command;
 
-import java.util.List;
-
 import dennis.storage.Storage;
 import dennis.task.Task;
 import dennis.task.TaskList;
@@ -10,9 +8,10 @@ import dennis.ui.Ui;
 /**
  * Lists every task whose description contains a given keyword.
  *
- * <p>Matches are shown renumbered from 1, in list order. The search is
- * case-sensitive and looks at the description text only, so the numbers
- * shown here do not line up with {@code mark}/{@code unmark}/{@code delete}.</p>
+ * <p>Each match is shown at its real position in the list (so the number
+ * still works with {@code mark}/{@code unmark}/{@code delete}), the same
+ * convention {@link OnCommand} uses. The search is case-sensitive and looks
+ * at the description text only.</p>
  */
 public class FindCommand extends Command {
     /** The keyword to search task descriptions for. */
@@ -29,16 +28,18 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        List<Task> matches = tasks.asList().stream()
-                .filter(task -> task.matches(keyword))
-                .toList();
-
         ui.showMessage("Purr-fect, found these matching tasks:");
-        for (int i = 0; i < matches.size(); i++) {
-            ui.showMessage((i + 1) + "." + matches.get(i));
+
+        boolean hasMatch = false;
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            if (task.matches(keyword)) {
+                hasMatch = true;
+                ui.showMessage((i + 1) + "." + task);
+            }
         }
 
-        if (matches.isEmpty()) {
+        if (!hasMatch) {
             ui.showMessage("No matching tasks found.");
         }
     }
