@@ -79,7 +79,7 @@ public class Ui {
     }
 
     /**
-     * Prints an error in Dennis's standard style ({@code ERROR!! ...}).
+     * Prints an error in Dennis's standard style ({@code HISS!! ...}).
      *
      * @param message explanation of what went wrong
      */

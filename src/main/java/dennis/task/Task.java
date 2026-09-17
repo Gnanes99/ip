@@ -154,7 +154,7 @@ public abstract class Task {
      * loader.
      *
      * @param value     user-supplied text for one field
-     * @param fieldName  human-readable field name, used in the error message
+     * @param fieldName human-readable field name, used in the error message
      * @return {@code value} unchanged when it is safe to store
      * @throws DennisException if {@code value} contains a "{@code |}" character
      */

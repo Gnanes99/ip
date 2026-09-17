@@ -39,7 +39,11 @@ public class TaskCommandTest {
         }
     }
 
-    /** @return a list containing {@code count} throwaway todos. */
+    /**
+     * Builds a task list containing {@code count} throwaway todos.
+     *
+     * @return the built list
+     */
     private static TaskList listOf(int count) throws DennisException {
         TaskList tasks = new TaskList();
         for (int i = 0; i < count; i++) {
