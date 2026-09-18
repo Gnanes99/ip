@@ -39,7 +39,8 @@ public class MainApp extends Application {
                     MainApp.class.getResource("/view/dennis.css").toExternalForm());
             stage.setScene(scene);
             stage.setTitle("Dennis");
-            stage.setResizable(false);
+            stage.setMinHeight(220);
+            stage.setMinWidth(400);
             stage.show();
         } catch (IOException e) {
             throw new IllegalStateException(
