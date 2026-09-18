@@ -36,3 +36,15 @@ The console version is still there, if you'd rather skip the GUI:
 ```
 java -cp build/classes/java/main dennis.Dennis
 ```
+
+## Acknowledgements
+
+- This project started from the [se-edu iP template](https://github.com/nus-cs2103-AY2627S1/ip) for CS2103/T, which supplied the initial Gradle and Checkstyle setup.
+- The Checkstyle rules come from [se-edu/addressbook-level3](https://github.com/se-edu/addressbook-level3/tree/master/config/checkstyle).
+- The CI workflow is based on the one in [se-edu/duke](https://github.com/se-edu/duke/blob/full-template/.github/workflows/gradle.yml).
+- The GUI (`Launcher`, `MainApp`, `MainWindow`, `DialogBox`) is structured after the [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFx.html), though the layout and styling are custom.
+- The cat avatar shown in the chat window is [sourced from here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6vjtF_9eNpjwwZPS1Of3s2wiU0eqJiSd_IHZdR5Fhtw&s=10) — the only non-original image in the project.
+
+## Use of AI tools
+
+Tool: Claude Code (Anthropic). Used by: Gnanes99. Extent: used throughout the project, across most of the codebase, tests, and documentation, rather than in a handful of isolated spots — so per the course's [policy on reuse](https://nus-cs2103-ay2627-s1.github.io/website/schedule/week6/project.html#:~:text=Admin%20%20Course%20Policies%20%E2%86%92%20Policy%20on%20Reuse), that use is disclosed here instead of in individual code comments.
