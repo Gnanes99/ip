@@ -47,4 +47,4 @@ java -cp build/classes/java/main dennis.Dennis
 
 ## Use of AI tools
 
-Tool: Claude Code (Anthropic). Used by: Gnanes99. Extent: used throughout the project, across most of the codebase, tests, and documentation, rather than in a handful of isolated spots — so per the course's [policy on reuse](https://nus-cs2103-ay2627-s1.github.io/website/schedule/week6/project.html#:~:text=Admin%20%20Course%20Policies%20%E2%86%92%20Policy%20on%20Reuse), that use is disclosed here instead of in individual code comments.
+Tool: Claude Code (Anthropic). Used by: Gnanes99. Extent: used throughout the project, across most of the codebase, tests, and documentation, rather than in a handful of isolated spots, so per the course's [policy on reuse](https://nus-cs2103-ay2627-s1.github.io/website/schedule/week6/project.html#:~:text=Admin%20%20Course%20Policies%20%E2%86%92%20Policy%20on%20Reuse), that use is disclosed here instead of in individual code comments.
